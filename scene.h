@@ -30,12 +30,13 @@ struct Scene {
 	virtual void Responder(Event* event, EventManager* eventManager) =0;
 
 	EntityManager* entMan;
+	EventManager* eventManager;
 
 };
 
 struct TitleScene:Scene {
 
-	TitleScene();
+	TitleScene(EventManager* eventManager);
 	~TitleScene();
 
 	void DoFrame(Renderer* renderer);

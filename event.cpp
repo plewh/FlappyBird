@@ -1,7 +1,7 @@
 #include "event.h"
 #include <cstdio>
 
-Event::Event(eventType_e type, char* data) {
+Event::Event(eventType_e type, const char* data) {
 
 	this->type = type;
 	this->data = data;
@@ -25,7 +25,7 @@ void EventManager::PumpEvents() {
 
 	for (; tail != head; tail = (tail + 1) % MAX_EVENTS) {
 
-		for (int j = 0; j < listenerVect.size(); ++j) {
+		for (size_t j = 0; j < listenerVect.size(); ++j) {
 
 			listenerVect[j]->Responder(eventQueue[tail]);
 		}
@@ -44,8 +44,6 @@ void EventManager::AddListener(EventListener* listener) {
 }
 
 void EventManager::Post(Event* event) {
-
-	//queue.push_back(event);
 
 	eventQueue[head] = event;
 	head = (head + 1) % MAX_EVENTS;

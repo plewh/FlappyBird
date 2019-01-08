@@ -7,16 +7,17 @@ enum eventType_e {
 	QUIT,
 	NONE,
 	CHANGE_SCENE,
-	KEYDOWN
+	KEYDOWN,
+	TITLE_SPLASH_DONE
 
 };
 
 struct Event {
 
-	Event(eventType_e type, char* data);
+	Event(eventType_e type, const char* data);
 
 	eventType_e type;
-	char*       data;
+	const char*       data;
 
 };
 

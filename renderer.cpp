@@ -25,6 +25,8 @@ Renderer::Renderer() {
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_CreateWindowAndRenderer(WIN_X, WIN_Y, 0, &window, &renderer);
+	SDL_SetWindowResizable(window, SDL_FALSE);
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
 	TTF_Init();
 
@@ -48,40 +50,29 @@ Renderer::~Renderer() {
 
 }
 
-void Renderer::Blit(double x, double y, Texture* tex) {
+void Renderer::Blit(
+	double x, 
+	double y, 
+	double angle, 
+	Texture* tex, 
+	double scale, 
+	double alpha) {
 
-	SDL_Rect dQuad = {(int)x, (int)y, tex->w, tex->h};
+	SDL_Rect dQuad = {(int)x, (int)y, (int)(tex->w * scale), (int)(tex->h * scale)};
+	SDL_SetTextureAlphaMod(tex->tex, alpha);
 	SDL_RenderCopyEx(
 		renderer,
 		tex->tex,
 		NULL,
 		&dQuad,
-		0.0,
+		angle,
 		NULL,
 		SDL_FLIP_NONE
 	);
 
 }
 
-	/*
-void Renderer::Blit(double x, double y, double angle, asset_e id, double scale) {
-
-	Asset* ass = GetAssFromID(id);
-
-	SDL_Rect r = {(int)x, (int)y, ass->w * scale, ass->h * scale};
-
-	SDL_RenderCopyEx(
-		renderer,                   // SDL context
-		ass->tex,                   // texture
-		NULL,                       // src rect
-		&r,                         // dst rect 
-		angle,                      // angle
-		NULL,                       // centre
-		SDL_FLIP_NONE               // don't flip the texture
-	);             
-
-}
-
+/*
 void Renderer::Print(int x, int y, char const* text) {
 
 	SDL_Rect r = {x, y, 0, 0};
@@ -155,6 +146,7 @@ static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath) {
 	SDL_Surface* surf = SDL_LoadBMP(fPath);
 	SDL_SetColorKey(surf, true, SDL_MapRGB(surf->format, 0, 255, 255));
 	SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, surf);
+	SDL_SetTextureBlendMode(text, SDL_BLENDMODE_BLEND);
 	SDL_FreeSurface(surf);
 
 	int w, h;

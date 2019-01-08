@@ -10,7 +10,7 @@ SceneManager::SceneManager(Renderer* renderer, EventManager* eventManager) {
 
 	this->renderer = renderer;
 	this->eventManager = eventManager;
-	sceneStack.push_back(new TitleScene);
+	sceneStack.push_back(new TitleScene(this->eventManager));
 
 }
 
@@ -22,14 +22,15 @@ SceneManager::~SceneManager() {
 
 void SceneManager::DoFrame() {
 
-	for (int j = 0; j < sceneStack.size(); ++j)
+	for (size_t j = 0; j < sceneStack.size(); ++j)
 		sceneStack[j]->DoFrame(renderer);
 
 }
 
 void SceneManager::Tick() {
 
-	;
+	for (size_t j = 0; j < sceneStack.size(); ++j)
+		sceneStack[j]->Tick();
 
 }
 
@@ -40,7 +41,7 @@ void SceneManager::Responder(Event* event) {
 		case KEYDOWN:
 
 			if (!strcmp(event->data, "q"))
-				eventManager->Post(new Event(QUIT, NULL));
+				eventManager->Post(new Event(QUIT, ""));
 			else
 				sceneStack.back()->Responder(event, eventManager);
 			break;
@@ -49,6 +50,10 @@ void SceneManager::Responder(Event* event) {
 			if (!strcmp(event->data, "GAME_SCENE")) {
 				ChangeScene(GAME);
 			}
+			break;
+
+		case TITLE_SPLASH_DONE:
+			sceneStack[0]->Responder(event, eventManager);
 			break;
 
 		default:
@@ -75,20 +80,24 @@ void SceneManager::ChangeScene(scene_e sceneTag) {
 
 }
 
-TitleScene::TitleScene() {
+TitleScene::TitleScene(EventManager* eventManager) {
 
 	entMan = new EntityManager;
-	int ent;
+	this->eventManager = eventManager;
 
+	int ent;
 	// bckgnd
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0));
 
 	// splash
 	ent = entMan->NewEntity();
-	entMan->AddComponent(ent, new PositionComponent((640.0 - 300.0) / 2, (480.0 - 300.0) / 2));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_SPLASH));
+	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
+	entMan->AddComponent(ent, new SizeComponent(900.0, 1000.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_SPLASH1, 0.0001, 255.0));
+	entMan->AddComponent(ent, new RotateComponent(0.0, 0.0));
+	entMan->AddComponent(ent, new SplashTickComponent(0.006, 2.0));
 
 }
 
@@ -106,7 +115,9 @@ void TitleScene::DoFrame(Renderer* renderer) {
 
 void TitleScene::Tick() {
 
-	;
+	SplashTickSystem(entMan, eventManager);
+	MaskTickSystem(entMan, eventManager);
+	AngleTickSystem(entMan);
 
 }
 
@@ -115,15 +126,29 @@ void TitleScene::Responder(Event* event, EventManager* eventManager) {
 	if (event->type == KEYDOWN && !strcmp(event->data, " "))
 		eventManager->Post(new Event(CHANGE_SCENE, "GAME_SCENE"));
 
+	if (event->type == TITLE_SPLASH_DONE) {
+
+		int id = entMan->NewEntity();
+		entMan->AddComponent(id, new PositionComponent(0.0, 0.0));
+		entMan->AddComponent(id, new SpriteComponent(TEX_MASK, 1.0, 255.0));
+		entMan->AddComponent(id, new MaskTickComponent(-1.0));
+
+	}
+
 }
 
 GameScene::GameScene() {
 
 	entMan = new EntityManager;
+	this->eventManager = eventManager;
 
+	// bckgnd
 	int ent = entMan->NewEntity();
-	entMan->AddComponent(ent, new PositionComponent(120.0, 120.0));
-	entMan->AddComponent(ent, new SpriteComponent(DUNNO));
+	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0));
+
+	//my name is lexi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//my name is aidan!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 }
 

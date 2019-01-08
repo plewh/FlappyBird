@@ -8,8 +8,12 @@ EntityManager::EntityManager() {
 
 	for (int j = 0; j < MAX_ENTS; ++j) {
 
-		position[j] = NULL;
-		sprite[j]   = NULL;
+		position[j]   = NULL;
+		sprite[j]     = NULL;
+		angle[j]      = NULL;
+		splashTick[j] = NULL;
+		size[j]       = NULL;
+		maskTick[j]   = NULL;
 
 	}
 
@@ -44,6 +48,22 @@ void EntityManager::AddComponent(int id, Component* component) {
 			sprite[id] = component;
 			break;
 
+		case ANGLE:
+			angle[id] = component;
+			break;
+
+		case SPLASH_TICK:
+			splashTick[id] = component;
+			break;
+
+		case SIZE:
+			size[id] = component;
+			break;
+
+		case MASK_TICK:
+			maskTick[id] = component;
+			break;
+
 		default:
 			break;
 
@@ -63,6 +83,26 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 		case SPRITE:
 			delete(sprite[id]);
 			sprite[id] = NULL;
+			break;
+
+		case ANGLE:
+			delete(angle[id]);
+			angle[id] = NULL;
+			break;
+
+		case SPLASH_TICK:
+			delete(splashTick[id]);
+			splashTick[id] = NULL;
+			break;
+
+		case SIZE:
+			delete(size[id]);
+			size[id] = NULL;
+			break;
+
+		case MASK_TICK:
+			delete(maskTick[id]);
+			size[id] = NULL;
 			break;
 
 		default:

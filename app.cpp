@@ -3,6 +3,7 @@
 #include <cstdio>
 #include "renderer.h"
 #include "scene.h"
+#include "event.h"
 #include "defs.h"
 
 App::App() {
@@ -67,7 +68,7 @@ void App::PumpSystemEvents() {
 		switch (event.type) {
 			
 			case SDL_QUIT:
-				eventManager->Post(new Event(QUIT, NULL));
+				eventManager->Post(new Event(QUIT, ""));
 				break;
 
 			case SDL_KEYDOWN:

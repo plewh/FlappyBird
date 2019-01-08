@@ -21,8 +21,7 @@ struct Renderer {
 	Renderer();
 	~Renderer();
 
-	void Blit(double x, double y, Texture* tex);
-	//void Blit(double x, double y, double angle, asset_e id, double scale);
+	void Blit(double x, double y, double angle, Texture* tex, double scale, double alpha);
 	//void Print(int x, int y, char const* text);
 	void Clear();
 	void Present();
