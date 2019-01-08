@@ -73,3 +73,21 @@ struct MaskTickComponent:Component {
 	double value;
 
 };
+
+struct FlappyPhysicsComponent:Component {
+
+	FlappyPhysicsComponent();
+
+	double grav;
+	double yAcc;
+
+};
+
+struct FlappyInputComponent:Component {
+
+	FlappyInputComponent(EventManager* eventManager);
+
+	EventManager* eventManager;
+	double lift;
+
+};

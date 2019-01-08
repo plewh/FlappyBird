@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #define WIN_X      960
 #define WIN_Y      1280
@@ -15,7 +16,9 @@ enum component_tag_e {
 	ANGLE,
 	SPLASH_TICK,
 	SIZE,
-	MASK_TICK
+	MASK_TICK,
+	FLAPPY_PHYSICS,
+	FLAPPY_INPUT
 
 };
 

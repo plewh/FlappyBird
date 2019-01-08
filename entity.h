@@ -28,11 +28,13 @@ struct EntityManager {
 	void RemoveComponent(int id, component_tag_e tag);
 
 	int entCount;
-	Component* position   [MAX_ENTS];
-	Component* sprite     [MAX_ENTS];
-	Component* angle      [MAX_ENTS];
-	Component* splashTick [MAX_ENTS];
-	Component* size       [MAX_ENTS];
-	Component* maskTick   [MAX_ENTS];
+	Component* position      [MAX_ENTS];
+	Component* sprite        [MAX_ENTS];
+	Component* angle         [MAX_ENTS];
+	Component* splashTick    [MAX_ENTS];
+	Component* size          [MAX_ENTS];
+	Component* maskTick      [MAX_ENTS];
+	Component* flappyPhysics [MAX_ENTS];
+	Component* flappyInput   [MAX_ENTS];
 
 };

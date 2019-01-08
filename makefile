@@ -8,5 +8,5 @@ EXE = flap
 $(EXE): $(OBJECT) 
 	$(CC) $(CFLAGS) $(OBJECT) $(LIBS) -o $(EXE)
 
-%.o: %.cpp
+%.o: %.cpp %.h
 	$(CC) $(CFLAGS) -c $< -o $@

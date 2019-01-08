@@ -62,4 +62,20 @@ MaskTickComponent::MaskTickComponent(double decay) {
 	this->value = 255.0;
 	this->decay = decay;
 
-};
+}
+
+FlappyPhysicsComponent::FlappyPhysicsComponent() {
+
+	this->tag   = FLAPPY_PHYSICS;
+	this->grav  = 1.0;
+	this->yAcc  = 0.0;
+
+}
+
+FlappyInputComponent::FlappyInputComponent(EventManager* eventManager) {
+
+	this->tag          = FLAPPY_INPUT;
+	this->eventManager = eventManager;
+	this->lift         = -20.0;
+
+}

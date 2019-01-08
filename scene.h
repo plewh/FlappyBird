@@ -1,10 +1,20 @@
 #pragma once
+#include "defs.h"
 #include "event.h"
 
 struct Renderer;
 struct EntityManager;
-struct Scene;
-struct EventManager;
+
+struct Scene {
+
+	virtual void DoFrame(Renderer* renderer)                         =0;
+	virtual void Tick()                                              =0;
+	virtual void Responder(Event* event, EventManager* eventManager) =0;
+
+	EntityManager* entMan;
+	EventManager* eventManager;
+
+};
 
 struct SceneManager:EventListener {
 
@@ -23,35 +33,3 @@ struct SceneManager:EventListener {
 
 };
 
-struct Scene {
-
-	virtual void DoFrame(Renderer* renderer)                         =0;
-	virtual void Tick()                                              =0;
-	virtual void Responder(Event* event, EventManager* eventManager) =0;
-
-	EntityManager* entMan;
-	EventManager* eventManager;
-
-};
-
-struct TitleScene:Scene {
-
-	TitleScene(EventManager* eventManager);
-	~TitleScene();
-
-	void DoFrame(Renderer* renderer);
-	void Tick();
-	void Responder(Event* event, EventManager* eventManager);
-
-};
-
-struct GameScene:Scene {
-
-	GameScene();
-	~GameScene();
-
-	void DoFrame(Renderer* renderer);
-	void Tick();
-	void Responder(Event* event, EventManager* eventManager);
-
-};

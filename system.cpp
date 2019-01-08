@@ -3,8 +3,9 @@
 #include "renderer.h"
 #include "component.h"
 #include "event.h"
+#include <cstdio>
 
-void BlitSpriteSystem(Renderer* renderer, EntityManager* entMan) {
+void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 
 	for (int j = 0; j < entMan->entCount; ++j)
 		if (entMan->position[j] && entMan->sprite[j]) {
@@ -99,6 +100,46 @@ void MaskTickSystem(EntityManager* entMan, EventManager* eventManager) {
 			}
 
 			spr->alpha = msk->value;
+
+		}
+
+	}
+
+}
+
+void FlappyPhysicsSystem(EntityManager* entMan) {
+
+	for (int j = 0; j < entMan->entCount; ++j) {
+
+		if (entMan->flappyPhysics[j]) {
+			
+			FlappyPhysicsComponent* flap = 
+				(FlappyPhysicsComponent*)entMan->flappyPhysics[j];
+			PositionComponent* pos = (PositionComponent*)entMan->position[j];
+			RotateComponent* rot = (RotateComponent*)entMan->angle[j];
+
+			flap->yAcc += flap->grav;
+			pos->y += flap->yAcc;
+			rot->angle = flap->yAcc;
+
+		}
+
+	}
+
+}
+
+void FlappyInputSystem(EntityManager* entMan) {
+
+	for (int j = 0; j < entMan->entCount; ++j) {
+
+		if (entMan->flappyInput[j]) {
+
+			FlappyInputComponent* fIn = 
+				(FlappyInputComponent*)entMan->flappyInput[j];
+			FlappyPhysicsComponent* flap = 
+				(FlappyPhysicsComponent*)entMan->flappyPhysics[j];
+
+			flap->yAcc += fIn->lift;
 
 		}
 

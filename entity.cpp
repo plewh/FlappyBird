@@ -8,12 +8,14 @@ EntityManager::EntityManager() {
 
 	for (int j = 0; j < MAX_ENTS; ++j) {
 
-		position[j]   = NULL;
-		sprite[j]     = NULL;
-		angle[j]      = NULL;
-		splashTick[j] = NULL;
-		size[j]       = NULL;
-		maskTick[j]   = NULL;
+		position[j]      = NULL;
+		sprite[j]        = NULL;
+		angle[j]         = NULL;
+		splashTick[j]    = NULL;
+		size[j]          = NULL;
+		maskTick[j]      = NULL;
+		flappyPhysics[j] = NULL;
+		flappyInput[j]   = NULL;
 
 	}
 
@@ -41,27 +43,35 @@ void EntityManager::AddComponent(int id, Component* component) {
 	switch (component->tag) {
 
 		case POSITION:
-			position[id] = component;
+			position[id]      = component;
 			break;
 
 		case SPRITE:
-			sprite[id] = component;
+			sprite[id]        = component;
 			break;
 
 		case ANGLE:
-			angle[id] = component;
+			angle[id]         = component;
 			break;
 
 		case SPLASH_TICK:
-			splashTick[id] = component;
+			splashTick[id]    = component;
 			break;
 
 		case SIZE:
-			size[id] = component;
+			size[id]          = component;
 			break;
 
 		case MASK_TICK:
-			maskTick[id] = component;
+			maskTick[id]      = component;
+			break;
+
+		case FLAPPY_PHYSICS:
+			flappyPhysics[id] = component;
+			break;
+
+		case FLAPPY_INPUT:
+			flappyInput[id]   = component;
 			break;
 
 		default:
@@ -102,7 +112,17 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 
 		case MASK_TICK:
 			delete(maskTick[id]);
-			size[id] = NULL;
+			maskTick[id] = NULL;
+			break;
+
+		case FLAPPY_PHYSICS:
+			delete(flappyPhysics[id]);
+			flappyPhysics[id] = NULL;
+			break;
+
+		case FLAPPY_INPUT:
+			delete(flappyInput[id]);
+			flappyInput[id] = NULL;
 			break;
 
 		default:
