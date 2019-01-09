@@ -18,7 +18,9 @@ enum component_tag_e {
 	SIZE,
 	MASK_TICK,
 	FLAPPY_PHYSICS,
-	FLAPPY_INPUT
+	FLAPPY_INPUT,
+	SPRITE_SPAN,
+	ANIM
 
 };
 
@@ -31,7 +33,8 @@ enum texture_e {
 	TEX_MENU,
 	TEX_PIPE,
 	TEX_SPLASH,
-	TEX_SPLASH1
+	TEX_SPLASH1,
+	TEX_GND
 
 };
 

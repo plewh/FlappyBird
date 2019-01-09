@@ -36,5 +36,7 @@ struct EntityManager {
 	Component* maskTick      [MAX_ENTS];
 	Component* flappyPhysics [MAX_ENTS];
 	Component* flappyInput   [MAX_ENTS];
+	Component* spriteSpan    [MAX_ENTS];
+	Component* anim          [MAX_ENTS];
 
 };

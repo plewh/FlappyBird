@@ -17,6 +17,13 @@ GameScene::GameScene() {
 	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
 	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0));
 
+	// gnd
+	ent = entMan->NewEntity();
+	entMan->AddComponent(ent, new PositionComponent(0.0, 1280.0 - 160.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_GND, 1.0, 255.0));
+	entMan->AddComponent(ent, new SpriteSpanComponent(20));
+	entMan->AddComponent(ent, new AnimComponent(50, -0.08, 48, 160, 1));
+
 	// flappy
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(366.0, (WIN_Y - 82) / 2));

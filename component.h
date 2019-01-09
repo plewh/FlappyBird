@@ -91,3 +91,23 @@ struct FlappyInputComponent:Component {
 	double lift;
 
 };
+
+struct SpriteSpanComponent:Component {
+
+	SpriteSpanComponent(int repeat);
+	int repeat;
+
+};
+
+struct AnimComponent:Component {
+
+	AnimComponent(int fCount, double decay, int w, int h, int offset);
+	int    fCount;
+	int    currFrame;
+	double value;
+	double decay;
+	int    w;
+	int    h;
+	int    offset;
+
+};

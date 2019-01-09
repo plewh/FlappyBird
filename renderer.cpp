@@ -10,14 +10,17 @@ static Texture* tex_menu;
 static Texture* tex_pipe;
 static Texture* tex_splash;
 static Texture* tex_splash1;
+static Texture* tex_gnd;
 
 static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath);
+static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath, int w, int h, int frames);
 
-Texture::Texture(SDL_Texture* tex, int w, int h) {
+Texture::Texture(SDL_Texture* tex, int w, int h, int frames) {
 
-	this->tex = tex;
-	this->w   = w;
-	this->h   = h;
+	this->tex    = tex;
+	this->w      = w;
+	this->h      = h;
+	this->frames = frames;
 
 }
 
@@ -38,6 +41,7 @@ Renderer::Renderer() {
 	tex_pipe    = LoadTex(renderer, "ass/tex_pipe.bmp");
 	tex_splash  = LoadTex(renderer, "ass/tex_splash.bmp");
 	tex_splash1 = LoadTex(renderer, "ass/tex_splash1.bmp");
+	tex_gnd     = LoadTex(renderer, "ass/tex_gnd.bmp", 45, 160, 2);
 
 }
 
@@ -52,18 +56,36 @@ Renderer::~Renderer() {
 
 void Renderer::Blit(
 	double x, 
-	double y, 
+	double y,
+	int    w,
+	int    h,
 	double angle, 
 	Texture* tex, 
 	double scale, 
-	double alpha) {
+	double alpha, 
+	int frame,
+	int offset) {
 
-	SDL_Rect dQuad = {(int)x, (int)y, (int)(tex->w * scale), (int)(tex->h * scale)};
+	SDL_Rect sQuad;
+	if ( offset == -1 ) {
+		sQuad.x = w * frame;
+		sQuad.y = 0; 
+		sQuad.w = w;
+		sQuad.h = h;
+	} else {
+		sQuad.x = frame;
+		sQuad.y = 0; 
+		sQuad.w = w;
+		sQuad.h = h;
+
+	}
+
+	SDL_Rect dQuad = {(int)x, (int)y, (int)(w * scale), (int)(h * scale)};
 	SDL_SetTextureAlphaMod(tex->tex, alpha);
 	SDL_RenderCopyEx(
 		renderer,
 		tex->tex,
-		NULL,
+		&sQuad,
 		&dQuad,
 		angle,
 		NULL,
@@ -134,6 +156,9 @@ Texture* Renderer::GetTexture(texture_e tag) {
 		case TEX_SPLASH1:
 			return tex_splash1;
 
+		case TEX_GND:
+			return tex_gnd;
+
 		default:
 			return dunno;
 
@@ -151,7 +176,21 @@ static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath) {
 
 	int w, h;
 	SDL_QueryTexture(text, NULL, NULL, &w, &h);
-	Texture* tex = new Texture(text, w, h);
+	Texture* tex = new Texture(text, w, h, 0);
+
+	return tex;
+
+}
+
+static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath, int w, int h, int frames) {
+
+	SDL_Surface* surf = SDL_LoadBMP(fPath);
+	SDL_SetColorKey(surf, true, SDL_MapRGB(surf->format, 0, 255, 255));
+	SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, surf);
+	SDL_SetTextureBlendMode(text, SDL_BLENDMODE_BLEND);
+	SDL_FreeSurface(surf);
+
+	Texture* tex = new Texture(text, w, h, frames);
 
 	return tex;
 

@@ -79,3 +79,23 @@ FlappyInputComponent::FlappyInputComponent(EventManager* eventManager) {
 	this->lift         = -20.0;
 
 }
+
+SpriteSpanComponent::SpriteSpanComponent(int repeat) {
+
+	this->tag          = SPRITE_SPAN;
+	this->repeat       = repeat;
+
+}
+
+AnimComponent::AnimComponent(int fCount, double decay, int w, int h, int offset) {
+
+	this->tag          = ANIM;
+	this->fCount       = fCount;
+	this->currFrame    = 0;
+	this->value        = 1.0;
+	this->decay        = decay;
+	this->w            = w;
+	this->h            = h;
+	this->offset       = offset;
+
+}

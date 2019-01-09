@@ -16,6 +16,8 @@ EntityManager::EntityManager() {
 		maskTick[j]      = NULL;
 		flappyPhysics[j] = NULL;
 		flappyInput[j]   = NULL;
+		spriteSpan[j]    = NULL;
+		anim[j]          = NULL;
 
 	}
 
@@ -74,6 +76,14 @@ void EntityManager::AddComponent(int id, Component* component) {
 			flappyInput[id]   = component;
 			break;
 
+		case SPRITE_SPAN:
+			spriteSpan[id]    = component;
+			break;
+
+		case ANIM:
+			anim[id]          = component;
+			break;
+
 		default:
 			break;
 
@@ -123,6 +133,16 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 		case FLAPPY_INPUT:
 			delete(flappyInput[id]);
 			flappyInput[id] = NULL;
+			break;
+
+		case SPRITE_SPAN:
+			delete(spriteSpan[id]);
+			spriteSpan[id] = NULL;
+			break;
+
+		case ANIM:
+			delete(anim[id]);
+			anim[id] = NULL;
 			break;
 
 		default:

@@ -12,24 +12,61 @@ void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 
 			PositionComponent* pos = (PositionComponent*)entMan->position[j];
 			SpriteComponent*   spr = (SpriteComponent*)entMan->sprite[j];
+			Texture* tex  = renderer->GetTexture(spr->tName);
 
-			double x     = pos->x;
-			double y     = pos->y;
-			double scale = spr->scale;
-			double angle = 0.0;
-			double alpha = spr->alpha;
+			double x      = pos->x;
+			double y      = pos->y;
+			int    w      = tex->w;
+			int    h      = tex->h;
+			double scale  = spr->scale;
+			double angle  = 0.0;
+			double alpha  = spr->alpha;
+			int    repeat = 1;
+			int    frame  = 0;
+			int    offset = -1;
 
 			if (entMan->angle[j]) {
 				RotateComponent* r = (RotateComponent*)entMan->angle[j];
 				angle = r->angle;
 			}
 
-			renderer->Blit(
-				x, y, angle, 
-				renderer->GetTexture(spr->tName),
-				scale,
-				alpha
-			);
+			if (entMan->spriteSpan[j]) {
+				SpriteSpanComponent* spn = 
+					(SpriteSpanComponent*)entMan->spriteSpan[j];
+
+				repeat = spn->repeat;
+
+			}
+
+			if (entMan->anim[j]) {
+
+				AnimComponent* anm = (AnimComponent*)entMan->anim[j];
+				w = anm->w;
+				h = anm->h;
+
+				anm->value += anm->decay;
+				if (anm->value <= 0.0) {
+					anm->value = 1.0;
+					anm->currFrame = (anm->currFrame + 1) % anm->fCount;
+				}
+
+				frame = anm->currFrame;
+				if (anm->offset != -1)
+					offset = anm->offset;
+
+			}
+
+			for (int j = 0; j < repeat; ++j) {
+				renderer->Blit(
+					x + (j * w), y, w, h, angle, 
+					tex,
+					scale,
+					alpha,
+					frame,
+					offset
+				);
+
+			}
 
 		}
 

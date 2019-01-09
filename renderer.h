@@ -8,11 +8,12 @@ struct SDL_Texture;
 
 struct Texture {
 
-	Texture(SDL_Texture* tex, int w, int h);
+	Texture(SDL_Texture* tex, int w, int h, int frames);
 
 	SDL_Texture* tex;
 	int          w;
 	int          h;
+	int          frames;
 
 };
 
@@ -21,7 +22,15 @@ struct Renderer {
 	Renderer();
 	~Renderer();
 
-	void Blit(double x, double y, double angle, Texture* tex, double scale, double alpha);
+	void Blit(
+		double x, double y,
+		int    w, int    h,
+		double angle, 
+		Texture* tex, 
+		double scale, 
+		double alpha,
+		int frame,
+		int offset);
 	//void Print(int x, int y, char const* text);
 	void Clear();
 	void Present();
