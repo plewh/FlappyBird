@@ -43,3 +43,4 @@ TODO:
 		* Pause screen
 		* Quit/Restart menu
 	* Tweak flappy params to get as close to real game as possible
+	* Mouse controls
