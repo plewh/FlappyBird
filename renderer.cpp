@@ -26,13 +26,17 @@ Texture::Texture(SDL_Texture* tex, int w, int h, int frames) {
 
 Renderer::Renderer() {
 
+	Log("Renderer starting");
+	Log("Starting SDL...");
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_CreateWindowAndRenderer(WIN_X, WIN_Y, 0, &window, &renderer);
 	SDL_SetWindowResizable(window, SDL_FALSE);
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
+	Log("Starting SDL_ttf...");
 	TTF_Init();
 
+	Log("Loading textures...");
 	dunno       = LoadTex(renderer, "ass/dunno.bmp");
 	tex_bckgnd  = LoadTex(renderer, "ass/tex_bckgnd.bmp");
 	tex_flap    = LoadTex(renderer, "ass/tex_flap.bmp");
@@ -47,6 +51,7 @@ Renderer::Renderer() {
 
 Renderer::~Renderer() {
 
+	Log("Cleaning up renderer");
 	TTF_Quit();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);

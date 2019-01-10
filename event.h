@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "defs.h"
 
 enum eventType_e {
@@ -8,7 +7,8 @@ enum eventType_e {
 	NONE,
 	CHANGE_SCENE,
 	KEYDOWN,
-	TITLE_SPLASH_DONE
+	TITLE_SPLASH_DONE,
+	SPAWN_PIPE
 
 };
 
@@ -17,7 +17,7 @@ struct Event {
 	Event(eventType_e type, const char* data);
 
 	eventType_e type;
-	const char*       data;
+	const char* data;
 
 };
 

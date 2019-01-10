@@ -1,9 +1,9 @@
 #include "entity.h"
 #include "component.h"
-#include <cstddef>
 
 EntityManager::EntityManager() {
 
+	Log("EntityManager starting");
 	entCount = 0;
 
 	for (int j = 0; j < MAX_ENTS; ++j) {
@@ -18,6 +18,7 @@ EntityManager::EntityManager() {
 		flappyInput[j]   = NULL;
 		spriteSpan[j]    = NULL;
 		anim[j]          = NULL;
+		pipeSpawn[j]     = NULL;
 
 	}
 
@@ -25,6 +26,7 @@ EntityManager::EntityManager() {
 
 EntityManager::~EntityManager() {
 
+	Log("EntityManager cleaning up");
 	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		delete(position[j]);
@@ -35,6 +37,9 @@ EntityManager::~EntityManager() {
 }
 
 int EntityManager::NewEntity() {
+
+	if ( entCount == MAX_ENTS )
+		fprintf(stderr, "EXHAUSTED ENTITIES (MAX_ENTS %d)\n", MAX_ENTS);
 
 	return entCount++;
 
@@ -82,6 +87,10 @@ void EntityManager::AddComponent(int id, Component* component) {
 
 		case ANIM:
 			anim[id]          = component;
+			break;
+
+		case PIPE_SPAWN:
+			pipeSpawn[id]     = component;
 			break;
 
 		default:
@@ -143,6 +152,11 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 		case ANIM:
 			delete(anim[id]);
 			anim[id] = NULL;
+			break;
+
+		case PIPE_SPAWN:
+			delete(pipeSpawn[id]);
+			pipeSpawn[id] = NULL;
 			break;
 
 		default:

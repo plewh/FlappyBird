@@ -111,3 +111,12 @@ struct AnimComponent:Component {
 	int    offset;
 
 };
+
+struct PipeSpawnerComponent:Component {
+
+	PipeSpawnerComponent(double decay);
+	
+	double value;
+	double decay;
+
+};

@@ -3,7 +3,6 @@
 #include "renderer.h"
 #include "component.h"
 #include "event.h"
-#include <cstdio>
 
 void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 
@@ -177,6 +176,27 @@ void FlappyInputSystem(EntityManager* entMan) {
 				(FlappyPhysicsComponent*)entMan->flappyPhysics[j];
 
 			flap->yAcc += fIn->lift;
+
+		}
+
+	}
+
+}
+
+void PipeSpawnerTickSystem(EntityManager* entMan, EventManager* eventManager) {
+
+	for (int j = 0; j < entMan->entCount; ++j) {
+
+		if (entMan->pipeSpawn[j]) {
+			
+			PipeSpawnerComponent* pip = 
+				(PipeSpawnerComponent*)entMan->pipeSpawn[j];
+
+			pip->value += pip->decay;
+			if ( pip->value <= 0.0 ) {
+				pip->value = 1.0;
+				eventManager->Post(new Event(SPAWN_PIPE, "q"));
+			}
 
 		}
 

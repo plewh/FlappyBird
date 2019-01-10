@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "defs.h"
 
 struct SDL_Window;

@@ -3,11 +3,10 @@
 #include "entity.h"
 #include "component.h"
 #include "system.h"
-#include <cstring>
-
 
 TitleScene::TitleScene(EventManager* eventManager) {
 
+	Log("TitleScene started");
 	entMan = new EntityManager;
 	this->eventManager = eventManager;
 
@@ -29,6 +28,7 @@ TitleScene::TitleScene(EventManager* eventManager) {
 
 TitleScene::~TitleScene() {
 
+	Log("TitleScene cleaning up");
 	delete(entMan);
 
 }

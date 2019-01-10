@@ -1,13 +1,12 @@
 #include "app.h"
 #include <SDL2/SDL.h>
-#include <cstdio>
 #include "renderer.h"
 #include "scene.h"
 #include "event.h"
-#include "defs.h"
 
 App::App() {
 
+	Log("App starting");
 	renderer     = new Renderer;
 	eventManager = new EventManager;
 	eventManager->AddListener(this);
@@ -24,6 +23,7 @@ App::App() {
 
 App::~App() {
 
+	Log("App cleaning up...");
 	delete(renderer);
 
 }

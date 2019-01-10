@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <cstdio>
+#include <cstddef>
+#include <cstring>
 
 #define WIN_X      960
 #define WIN_Y      1280
@@ -7,7 +10,7 @@
 #define MAX_ENTS   32
 #define MAX_EVENTS 16
 
-void PrintLog(int line, const char* func, const char* file, char* comment);
+#define Log(comment) fprintf(stderr, "|%-14s %-13s:%-3d | %s\n", __FILE__, __func__, __LINE__, comment);
 
 enum component_tag_e {
 
@@ -20,7 +23,8 @@ enum component_tag_e {
 	FLAPPY_PHYSICS,
 	FLAPPY_INPUT,
 	SPRITE_SPAN,
-	ANIM
+	ANIM,
+	PIPE_SPAWN
 
 };
 

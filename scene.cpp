@@ -2,18 +2,20 @@
 #include "renderer.h"
 #include "titlescene.h"
 #include "gamescene.h"
-#include <cstring>
 
 SceneManager::SceneManager(Renderer* renderer, EventManager* eventManager) {
 
+	Log("SceneManager starting");
 	this->renderer = renderer;
 	this->eventManager = eventManager;
-	sceneStack.push_back(new TitleScene(this->eventManager));
+
+	ChangeScene(TITLE);
 
 }
 
 SceneManager::~SceneManager() {
 
+	Log("SceneManager cleaning up");
 	;
 
 }
@@ -54,6 +56,10 @@ void SceneManager::Responder(Event* event) {
 			sceneStack[0]->Responder(event, eventManager);
 			break;
 
+		case SPAWN_PIPE:
+			sceneStack.back()->Responder(event, eventManager);
+			break;
+
 		default:
 			break;
 
@@ -66,9 +72,15 @@ void SceneManager::ChangeScene(scene_e sceneTag) {
 	sceneStack.clear();
 
 	switch (sceneTag) {
-		
+
+		case TITLE:
+			sceneStack.push_back(new TitleScene(this->eventManager));
+			Log("TitleScene added to scene stack");
+			break;
+
 		case GAME:
-			sceneStack.push_back(new GameScene);
+			sceneStack.push_back(new GameScene(this->eventManager));
+			Log("GameScene added to scene stack");
 			break;
 
 		default:

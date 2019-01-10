@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "defs.h"
 
 /*******
@@ -38,5 +37,6 @@ struct EntityManager {
 	Component* flappyInput   [MAX_ENTS];
 	Component* spriteSpan    [MAX_ENTS];
 	Component* anim          [MAX_ENTS];
+	Component* pipeSpawn     [MAX_ENTS];
 
 };

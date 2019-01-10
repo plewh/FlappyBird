@@ -1,6 +1,4 @@
 #include "component.h"
-#include <cstdio>
-#include <cstddef>
 
 PositionComponent::PositionComponent(double x, double y) {
 
@@ -97,5 +95,13 @@ AnimComponent::AnimComponent(int fCount, double decay, int w, int h, int offset)
 	this->w            = w;
 	this->h            = h;
 	this->offset       = offset;
+
+}
+
+PipeSpawnerComponent::PipeSpawnerComponent(double decay) {
+
+	this->tag          = PIPE_SPAWN;
+	this->value        = 1.0;
+	this->decay        = decay;
 
 }

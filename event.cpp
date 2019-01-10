@@ -1,5 +1,4 @@
 #include "event.h"
-#include <cstdio>
 
 Event::Event(eventType_e type, const char* data) {
 
@@ -10,12 +9,20 @@ Event::Event(eventType_e type, const char* data) {
 
 EventManager::EventManager() {
 
+	Log("Event system starting ");
+
 	head = 0;
 	tail = 0;
+
+	for ( int j = 0; j < MAX_EVENTS; ++j )
+		eventQueue[j] = NULL;
+
 
 }
 
 EventManager::~EventManager() {
+
+	Log("Cleaning up event system");
 
 	;
 

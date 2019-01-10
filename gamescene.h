@@ -8,7 +8,7 @@ struct EventManager;
 
 struct GameScene:Scene {
 
-	GameScene();
+	GameScene(EventManager* eventManager);
 	~GameScene();
 
 	void DoFrame(Renderer* renderer);
