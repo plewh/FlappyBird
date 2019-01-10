@@ -14,12 +14,12 @@ GameScene::GameScene(EventManager* eventManager) {
 	// bckgnd
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0, 0));
 
 	// gnd
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(0.0, 1280.0 - 160.0));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_GND, 1.0, 255.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_GND, 1.0, 255.0, 1));
 	entMan->AddComponent(ent, new SpriteSpanComponent(20));
 	entMan->AddComponent(ent, new AnimComponent(50, -0.08, 48, 160, 1));
 
@@ -27,7 +27,7 @@ GameScene::GameScene(EventManager* eventManager) {
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(366.0, (WIN_Y - 82) / 2));
 	entMan->AddComponent(ent, new RotateComponent(0.0, 0.0));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_FLAP, 1.0, 255.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_FLAP, 1.0, 255.0, 2));
 	entMan->AddComponent(ent, new FlappyPhysicsComponent);
 	entMan->AddComponent(ent, new FlappyInputComponent(eventManager));
 
@@ -49,8 +49,10 @@ GameScene::~GameScene() {
 
 void GameScene::DoFrame(Renderer* renderer) {
 
-	BlitSpriteSystem(entMan, renderer);
+	BlitSpriteSystem(entMan, renderer, 0);
 	PipeSpriteSystem(entMan, renderer);
+	BlitSpriteSystem(entMan, renderer, 1);
+	BlitSpriteSystem(entMan, renderer, 2);
 
 }
 
@@ -68,10 +70,11 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 		FlappyInputSystem(entMan);
 
 	if ( event->type == SPAWN_PIPE ) {
+		double offset = (double)GetRandom(10, WIN_Y - (PIPE_GAP + 80 + 160));
 		int ent = entMan->NewEntity();
 		entMan->AddComponent(ent, new PositionComponent(950.0, 0.0));
 		entMan->AddComponent(ent, new PipeSpriteComponent(TEX_PIPE));
-		entMan->AddComponent(ent, new PipeComponent(500.0, -4.5));
+		entMan->AddComponent(ent, new PipeComponent(offset, -4.5));
 	}
 
 }

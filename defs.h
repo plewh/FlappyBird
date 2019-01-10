@@ -10,8 +10,12 @@
 #define MAX_ENTS   32
 #define MAX_EVENTS 16
 #define PIPE_GAP   312.0
+#define MAX_LAYER  3
 
 #define Log(comment) fprintf(stderr, "|%-14s %-13s:%-3d | %s\n", __FILE__, __func__, __LINE__, comment);
+
+void InitRandom();
+int  GetRandom(int a, int b);
 
 enum component_tag_e {
 

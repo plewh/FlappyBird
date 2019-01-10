@@ -22,11 +22,12 @@ struct PositionComponent:Component {
 
 struct SpriteComponent:Component {
 
-	SpriteComponent(texture_e tName, double scale, double alpha);
+	SpriteComponent(texture_e tName, double scale, double alpha, int layer);
 
 	texture_e tName;
 	double    scale;
 	double    alpha;
+	int       layer;
 
 };
 

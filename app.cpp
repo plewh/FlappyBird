@@ -19,6 +19,8 @@ App::App() {
 	tickRate     = 1.0 / TICK_RATE;
 	lag          = 0.0;
 
+	InitRandom();
+
 }
 
 App::~App() {

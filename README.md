@@ -24,8 +24,6 @@ Run:
 
 TODO:
 
-* Renderer
-	* Add layer data to blit systems to allow layer compositing
 * Pipes
 	* Add "cap" to top/bottom of pipes
 * Collision handling

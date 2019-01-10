@@ -4,14 +4,18 @@
 #include "component.h"
 #include "event.h"
 
-void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
+void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer, int layer) {
 
-	for (int j = 0; j < MAX_ENTS; ++j)
-		if (entMan->position[j] && entMan->sprite[j]) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->position[j] && entMan->sprite[j] ) {
 
 			PositionComponent* pos = (PositionComponent*)entMan->position[j];
 			SpriteComponent*   spr = (SpriteComponent*)entMan->sprite[j];
 			Texture* tex  = renderer->GetTexture(spr->tName);
+
+			if ( spr->layer != layer )
+				continue;
 
 			double x      = pos->x;
 			double y      = pos->y;
@@ -68,6 +72,8 @@ void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 			}
 
 		}
+
+	}
 
 }
 
@@ -216,10 +222,8 @@ void PipeTickSystem(EntityManager* entMan, EventManager* eventManager) {
 			pos->y = pip->offset; //top of gap
 			pos->x += pip->xAcc;
 
-			if ( pos->x + 160.0 < 0.0 ) {
-				fprintf(stderr, "%d\n", j);
+			if ( pos->x + 160.0 < 0.0 )
 				entMan->KillEntity(j);
-			}
 
 		}
 
@@ -237,7 +241,7 @@ void PipeSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 			PipeSpriteComponent* psp = 
 				(PipeSpriteComponent*)entMan->pipeSprite[j];
 			Texture* tex = renderer->GetTexture(psp->tName);
-			PipeComponent* pip = (PipeComponent*)entMan->pipe[j];
+			//PipeComponent* pip = (PipeComponent*)entMan->pipe[j];
 
 			// pipe top
 			renderer->Blit(

@@ -8,12 +8,13 @@ PositionComponent::PositionComponent(double x, double y) {
 
 }
 
-SpriteComponent::SpriteComponent(texture_e tName, double scale, double alpha) {
+SpriteComponent::SpriteComponent(texture_e tName, double scale, double alpha, int layer) {
 
 	this->tag   = SPRITE;
 	this->tName = tName;
 	this->scale = scale;
 	this->alpha = alpha;
+	this->layer = layer;
 
 }
 

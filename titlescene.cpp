@@ -14,13 +14,13 @@ TitleScene::TitleScene(EventManager* eventManager) {
 	// bckgnd
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_BCKGND, 1.0, 255.0, 0));
 
 	// splash
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(0.0, 0.0));
 	entMan->AddComponent(ent, new SizeComponent(900.0, 1000.0));
-	entMan->AddComponent(ent, new SpriteComponent(TEX_SPLASH1, 0.0001, 255.0));
+	entMan->AddComponent(ent, new SpriteComponent(TEX_SPLASH1, 0.0001, 255.0, 0));
 	entMan->AddComponent(ent, new RotateComponent(0.0, 0.0));
 	entMan->AddComponent(ent, new SplashTickComponent(0.006, 2.0));
 
@@ -35,7 +35,7 @@ TitleScene::~TitleScene() {
 
 void TitleScene::DoFrame(Renderer* renderer) {
 
-	BlitSpriteSystem(entMan, renderer);
+	BlitSpriteSystem(entMan, renderer, 0);
 
 }
 
@@ -56,7 +56,7 @@ void TitleScene::Responder(Event* event, EventManager* eventManager) {
 
 		int id = entMan->NewEntity();
 		entMan->AddComponent(id, new PositionComponent(0.0, 0.0));
-		entMan->AddComponent(id, new SpriteComponent(TEX_MASK, 1.0, 255.0));
+		entMan->AddComponent(id, new SpriteComponent(TEX_MASK, 1.0, 255.0, 0));
 		entMan->AddComponent(id, new MaskTickComponent(-1.0));
 
 	}
