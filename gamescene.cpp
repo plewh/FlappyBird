@@ -31,8 +31,9 @@ GameScene::GameScene(EventManager* eventManager) {
 	entMan->AddComponent(ent, new FlappyPhysicsComponent);
 	entMan->AddComponent(ent, new FlappyInputComponent(eventManager));
 
+	// pipe spawner
 	ent = entMan->NewEntity();
-	entMan->AddComponent(ent, new PipeSpawnerComponent(-0.05));
+	entMan->AddComponent(ent, new PipeSpawnerComponent(-0.007));
 
 	//my name is lexi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//my name is aidan!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -49,6 +50,7 @@ GameScene::~GameScene() {
 void GameScene::DoFrame(Renderer* renderer) {
 
 	BlitSpriteSystem(entMan, renderer);
+	PipeSpriteSystem(entMan, renderer);
 
 }
 
@@ -56,6 +58,7 @@ void GameScene::Tick() {
 
 	FlappyPhysicsSystem(entMan);
 	PipeSpawnerTickSystem(entMan, eventManager);
+	PipeTickSystem(entMan, eventManager);
 
 }
 
@@ -66,8 +69,9 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 
 	if ( event->type == SPAWN_PIPE ) {
 		int ent = entMan->NewEntity();
-		entMan->AddComponent(ent, new PositionComponent(100.0, 100.0));
-		entMan->AddComponent(ent, new SpriteComponent(TEX_PIPE, 1.0, 255.0));
+		entMan->AddComponent(ent, new PositionComponent(950.0, 0.0));
+		entMan->AddComponent(ent, new PipeSpriteComponent(TEX_PIPE));
+		entMan->AddComponent(ent, new PipeComponent(500.0, -4.5));
 	}
 
 }

@@ -8,7 +8,8 @@ enum eventType_e {
 	CHANGE_SCENE,
 	KEYDOWN,
 	TITLE_SPLASH_DONE,
-	SPAWN_PIPE
+	SPAWN_PIPE,
+	KILL_ENT
 
 };
 

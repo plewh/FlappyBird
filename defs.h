@@ -9,6 +9,7 @@
 #define TICK_RATE  60.0
 #define MAX_ENTS   32
 #define MAX_EVENTS 16
+#define PIPE_GAP   312.0
 
 #define Log(comment) fprintf(stderr, "|%-14s %-13s:%-3d | %s\n", __FILE__, __func__, __LINE__, comment);
 
@@ -24,7 +25,9 @@ enum component_tag_e {
 	FLAPPY_INPUT,
 	SPRITE_SPAN,
 	ANIM,
-	PIPE_SPAWN
+	PIPE_SPAWN,
+	PIPE,
+	PIPE_SPRITE
 
 };
 

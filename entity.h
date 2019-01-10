@@ -22,11 +22,13 @@ struct EntityManager {
 	EntityManager();
 	~EntityManager();
 
-	int NewEntity();
+	int  NewEntity();
+	void KillEntity(int id);
 	void AddComponent(int id, Component* component);
 	void RemoveComponent(int id, component_tag_e tag);
 
-	int entCount;
+	bool       activeEnts[MAX_ENTS];
+
 	Component* position      [MAX_ENTS];
 	Component* sprite        [MAX_ENTS];
 	Component* angle         [MAX_ENTS];
@@ -38,5 +40,7 @@ struct EntityManager {
 	Component* spriteSpan    [MAX_ENTS];
 	Component* anim          [MAX_ENTS];
 	Component* pipeSpawn     [MAX_ENTS];
+	Component* pipe          [MAX_ENTS];
+	Component* pipeSprite    [MAX_ENTS];
 
 };

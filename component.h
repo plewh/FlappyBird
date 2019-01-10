@@ -120,3 +120,20 @@ struct PipeSpawnerComponent:Component {
 	double decay;
 
 };
+
+struct PipeComponent:Component {
+
+	PipeComponent(double offset, double xAcc);
+
+	double offset;
+	double xAcc;
+
+};
+
+struct PipeSpriteComponent:Component {
+
+	PipeSpriteComponent(texture_e tName);
+
+	texture_e tName;
+
+};

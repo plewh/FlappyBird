@@ -105,3 +105,18 @@ PipeSpawnerComponent::PipeSpawnerComponent(double decay) {
 	this->decay        = decay;
 
 }
+
+PipeComponent::PipeComponent(double offset, double xAcc) {
+
+	this->tag          = PIPE;
+	this->offset       = offset;
+	this->xAcc         = xAcc;
+
+}
+
+PipeSpriteComponent::PipeSpriteComponent(texture_e tName) {
+
+	this->tag          = PIPE_SPRITE;
+	this->tName        = tName;
+
+}

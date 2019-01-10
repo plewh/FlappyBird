@@ -6,7 +6,7 @@
 
 void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 
-	for (int j = 0; j < entMan->entCount; ++j)
+	for (int j = 0; j < MAX_ENTS; ++j)
 		if (entMan->position[j] && entMan->sprite[j]) {
 
 			PositionComponent* pos = (PositionComponent*)entMan->position[j];
@@ -73,7 +73,7 @@ void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 
 void AngleTickSystem(EntityManager* entMan) {
 
-	for (int j = 0; j < entMan->entCount; ++j) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if (entMan->angle[j]) {
 
@@ -88,7 +88,7 @@ void AngleTickSystem(EntityManager* entMan) {
 
 void SplashTickSystem(EntityManager* entMan, EventManager* eventManager) {
 
-	for (int j = 0; j < entMan->entCount; ++j) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if (entMan->splashTick[j]) {
 
@@ -122,7 +122,7 @@ void SplashTickSystem(EntityManager* entMan, EventManager* eventManager) {
 
 void MaskTickSystem(EntityManager* entMan, EventManager* eventManager) {
 
-	for (int j = 0; j < entMan->entCount; ++j) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
 		
 		if (entMan->maskTick[j]) {
 			
@@ -145,7 +145,7 @@ void MaskTickSystem(EntityManager* entMan, EventManager* eventManager) {
 
 void FlappyPhysicsSystem(EntityManager* entMan) {
 
-	for (int j = 0; j < entMan->entCount; ++j) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if (entMan->flappyPhysics[j]) {
 			
@@ -166,7 +166,7 @@ void FlappyPhysicsSystem(EntityManager* entMan) {
 
 void FlappyInputSystem(EntityManager* entMan) {
 
-	for (int j = 0; j < entMan->entCount; ++j) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if (entMan->flappyInput[j]) {
 
@@ -185,7 +185,7 @@ void FlappyInputSystem(EntityManager* entMan) {
 
 void PipeSpawnerTickSystem(EntityManager* entMan, EventManager* eventManager) {
 
-	for (int j = 0; j < entMan->entCount; ++j) {
+	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if (entMan->pipeSpawn[j]) {
 			
@@ -197,6 +197,76 @@ void PipeSpawnerTickSystem(EntityManager* entMan, EventManager* eventManager) {
 				pip->value = 1.0;
 				eventManager->Post(new Event(SPAWN_PIPE, "q"));
 			}
+
+		}
+
+	}
+
+}
+
+void PipeTickSystem(EntityManager* entMan, EventManager* eventManager) {
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->pipe[j] ) {
+
+			PipeComponent* pip = (PipeComponent*)entMan->pipe[j];
+			PositionComponent* pos = (PositionComponent*)entMan->position[j];
+
+			pos->y = pip->offset; //top of gap
+			pos->x += pip->xAcc;
+
+			if ( pos->x + 160.0 < 0.0 ) {
+				fprintf(stderr, "%d\n", j);
+				entMan->KillEntity(j);
+			}
+
+		}
+
+	}
+
+}
+
+void PipeSpriteSystem(EntityManager* entMan, Renderer* renderer) {
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->pipe[j] ) {
+
+			PositionComponent* pos = (PositionComponent*)entMan->position[j];
+			PipeSpriteComponent* psp = 
+				(PipeSpriteComponent*)entMan->pipeSprite[j];
+			Texture* tex = renderer->GetTexture(psp->tName);
+			PipeComponent* pip = (PipeComponent*)entMan->pipe[j];
+
+			// pipe top
+			renderer->Blit(
+				pos->x,
+				pos->y - 800,
+				tex->w,
+				tex->h,
+				0.0,
+				tex,
+				1.0,
+				255.0,
+				0,
+				-1
+			);
+
+			// pipe bottom
+
+			renderer->Blit(
+				pos->x,
+				pos->y + PIPE_GAP,
+				tex->w,
+				tex->h,
+				0.0,
+				tex,
+				1.0,
+				255.0,
+				0,
+				-1
+			);
 
 		}
 

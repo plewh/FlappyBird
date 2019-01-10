@@ -24,10 +24,10 @@ Run:
 
 TODO:
 
+* Renderer
+	* Add layer data to blit systems to allow layer compositing
 * Pipes
-	* Pipe spawner
-	* Pipe entity
-	* Pipe graphical assets
+	* Add "cap" to top/bottom of pipes
 * Collision handling
 * Scoring
 	* Scoring logic
@@ -42,5 +42,6 @@ TODO:
 		* Initial menu describing controls at game start
 		* Pause screen
 		* Quit/Restart menu
-	* Tweak flappy params to get as close to real game as possible
+	* Tweak flappy/pipe params to get as close to real game as possible
+	* Tweak speed of ground scroll to match pipe
 	* Mouse controls

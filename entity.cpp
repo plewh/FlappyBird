@@ -4,9 +4,10 @@
 EntityManager::EntityManager() {
 
 	Log("EntityManager starting");
-	entCount = 0;
 
 	for (int j = 0; j < MAX_ENTS; ++j) {
+		
+		activeEnts[j]    = false;
 
 		position[j]      = NULL;
 		sprite[j]        = NULL;
@@ -19,6 +20,8 @@ EntityManager::EntityManager() {
 		spriteSpan[j]    = NULL;
 		anim[j]          = NULL;
 		pipeSpawn[j]     = NULL;
+		pipe[j]          = NULL;
+		pipeSprite[j]    = NULL;
 
 	}
 
@@ -38,10 +41,34 @@ EntityManager::~EntityManager() {
 
 int EntityManager::NewEntity() {
 
-	if ( entCount == MAX_ENTS )
-		fprintf(stderr, "EXHAUSTED ENTITIES (MAX_ENTS %d)\n", MAX_ENTS);
+	for ( int j = 0; j < MAX_ENTS; ++j ) {
 
-	return entCount++;
+		if ( activeEnts[j] == false ) {
+			activeEnts[j] = true;
+			return j;
+		}
+
+	}
+
+}
+
+void EntityManager::KillEntity(int id) {
+
+	RemoveComponent(id, POSITION);
+	RemoveComponent(id, SPRITE);
+	RemoveComponent(id, ANGLE);
+	RemoveComponent(id, SPLASH_TICK);
+	RemoveComponent(id, SIZE);
+	RemoveComponent(id, MASK_TICK);
+	RemoveComponent(id, FLAPPY_PHYSICS);
+	RemoveComponent(id, FLAPPY_INPUT);
+	RemoveComponent(id, SPRITE_SPAN);
+	RemoveComponent(id, ANIM);
+	RemoveComponent(id, PIPE_SPAWN);
+	RemoveComponent(id, PIPE);
+	RemoveComponent(id, PIPE_SPRITE);
+
+	activeEnts[id] = false;
 
 }
 
@@ -91,6 +118,14 @@ void EntityManager::AddComponent(int id, Component* component) {
 
 		case PIPE_SPAWN:
 			pipeSpawn[id]     = component;
+			break;
+
+		case PIPE:
+			pipe[id]          = component;
+			break;
+
+		case PIPE_SPRITE:
+			pipeSprite[id]    = component;
 			break;
 
 		default:
@@ -157,6 +192,16 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 		case PIPE_SPAWN:
 			delete(pipeSpawn[id]);
 			pipeSpawn[id] = NULL;
+			break;
+
+		case PIPE:
+			delete(pipe[id]);
+			pipe[id] = NULL;
+			break;
+
+		case PIPE_SPRITE:
+			delete(pipeSprite[id]);
+			pipeSprite[id] = NULL;
 			break;
 
 		default:

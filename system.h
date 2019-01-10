@@ -12,3 +12,5 @@ void MaskTickSystem       (EntityManager* entMan, EventManager* eventManager);
 void FlappyPhysicsSystem  (EntityManager* entMan);
 void FlappyInputSystem    (EntityManager* entMan);
 void PipeSpawnerTickSystem(EntityManager* entMan, EventManager* eventManager);
+void PipeTickSystem       (EntityManager* entMan, EventManager* eventManager);
+void PipeSpriteSystem     (EntityManager* entMan, Renderer* renderer);
