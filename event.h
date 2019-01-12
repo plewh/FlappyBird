@@ -9,7 +9,8 @@ enum eventType_e {
 	KEYDOWN,
 	TITLE_SPLASH_DONE,
 	SPAWN_PIPE,
-	KILL_ENT
+	KILL_ENT,
+	GAME_RESTART
 
 };
 

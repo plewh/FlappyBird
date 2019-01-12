@@ -22,6 +22,7 @@ EntityManager::EntityManager() {
 		pipeSpawn[j]     = NULL;
 		pipe[j]          = NULL;
 		pipeSprite[j]    = NULL;
+		collidable[j]    = NULL;
 
 	}
 
@@ -32,8 +33,7 @@ EntityManager::~EntityManager() {
 	Log("EntityManager cleaning up");
 	for (int j = 0; j < MAX_ENTS; ++j) {
 
-		delete(position[j]);
-		delete(sprite[j]);
+		KillEntity(j);
 
 	}
 
@@ -67,6 +67,7 @@ void EntityManager::KillEntity(int id) {
 	RemoveComponent(id, PIPE_SPAWN);
 	RemoveComponent(id, PIPE);
 	RemoveComponent(id, PIPE_SPRITE);
+	RemoveComponent(id, COLLIDABLE);
 
 	activeEnts[id] = false;
 
@@ -126,6 +127,10 @@ void EntityManager::AddComponent(int id, Component* component) {
 
 		case PIPE_SPRITE:
 			pipeSprite[id]    = component;
+			break;
+
+		case COLLIDABLE:
+			collidable[id]    = component;
 			break;
 
 		default:
@@ -202,6 +207,11 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 		case PIPE_SPRITE:
 			delete(pipeSprite[id]);
 			pipeSprite[id] = NULL;
+			break;
+
+		case COLLIDABLE:
+			delete(collidable[id]);
+			collidable[id] = NULL;
 			break;
 
 		default:

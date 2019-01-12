@@ -138,3 +138,9 @@ struct PipeSpriteComponent:Component {
 	texture_e tName;
 
 };
+
+struct CollidableComponent:Component {
+
+	CollidableComponent();
+
+};

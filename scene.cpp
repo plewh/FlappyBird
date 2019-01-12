@@ -42,8 +42,9 @@ void SceneManager::Responder(Event* event) {
 
 			if (!strcmp(event->data, "q"))
 				eventManager->Post(new Event(QUIT, ""));
-			else
+			else {
 				sceneStack.back()->Responder(event, eventManager);
+			}
 			break;
 
 		case CHANGE_SCENE:
@@ -57,6 +58,7 @@ void SceneManager::Responder(Event* event) {
 			break;
 
 		case SPAWN_PIPE:
+		case GAME_RESTART:
 			sceneStack.back()->Responder(event, eventManager);
 			break;
 

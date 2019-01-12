@@ -277,3 +277,56 @@ void PipeSpriteSystem(EntityManager* entMan, Renderer* renderer) {
 	}
 
 }
+
+void CollisionHandlerSystem(EntityManager* entMan, EventManager* eventManager) {
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		// find flappy
+		if ( entMan->flappyPhysics[j] ) {
+
+			PositionComponent* aPos = 
+				(PositionComponent*)entMan->position[j];
+			SizeComponent* aSize = 
+				(SizeComponent*)entMan->size[j];
+
+			if ( aPos->y + aSize->h >= WIN_Y - 160.0 ) {
+
+				eventManager->Post(new Event(GAME_RESTART, "q"));
+				return;
+
+			}
+
+			for ( int i = 0; i < MAX_ENTS; ++i ) {
+
+				if ( entMan->collidable[i] && j != i ) {
+
+						PositionComponent* bPos = 
+							(PositionComponent*)entMan->position[i];
+						SizeComponent* bSize = 
+							(SizeComponent*)entMan->size[i];
+
+						/*
+						fprintf(
+							stderr, 
+							"A=%f:%f/%f:%f, B=%f:%f/%f:%f\n",
+							aPos->x, aPos->y,
+							aSize->w, aSize->h,
+							bPos->x, bPos->y,
+							bSize->w, bSize->h
+						);
+						*/
+
+
+				}
+
+			}
+
+			// prevent each collision being handled twice (A->B, B->A)
+			return;
+
+		}
+
+	}
+
+}

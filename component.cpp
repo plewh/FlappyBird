@@ -121,3 +121,9 @@ PipeSpriteComponent::PipeSpriteComponent(texture_e tName) {
 	this->tName        = tName;
 
 }
+
+CollidableComponent::CollidableComponent() {
+
+	this->tag          = COLLIDABLE;
+
+}

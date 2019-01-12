@@ -84,6 +84,10 @@ void App::PumpSystemEvents() {
 						eventManager->Post(new Event(KEYDOWN, "q"));
 						break;
 
+					case SDLK_RETURN:
+						eventManager->Post(new Event(KEYDOWN, "ENTER"));
+						break;
+
 					default:
 						break;
 

@@ -15,4 +15,9 @@ struct GameScene:Scene {
 	void Tick();
 	void Responder(Event* event, EventManager* eventManager);
 
+	private:
+	void PopulateWithInitEnts(EntityManager* entMan);
+	void Restart();
+	void SpawnPipe();
+
 };
