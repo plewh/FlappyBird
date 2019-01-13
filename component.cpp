@@ -5,6 +5,8 @@ PositionComponent::PositionComponent(double x, double y) {
 	this->tag = POSITION;
 	this->x = x;
 	this->y = y;
+	this->centreX = 0.0;
+	this->centreY = 0.0;
 
 }
 

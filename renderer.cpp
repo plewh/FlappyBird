@@ -121,6 +121,12 @@ void Renderer::Print(int x, int y, char const* text) {
 }
 	*/
 
+void Renderer::DrawLine(int aX, int aY, int bX, int bY) {
+
+	SDL_RenderDrawLine(renderer, aX, aY, bX, bY);
+
+}
+
 void Renderer::Clear() {
 	
 	SDL_RenderClear(renderer);

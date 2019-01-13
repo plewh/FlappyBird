@@ -17,6 +17,8 @@ struct PositionComponent:Component {
 
 	double x;
 	double y;
+	double centreX;
+	double centreY;
 
 };
 

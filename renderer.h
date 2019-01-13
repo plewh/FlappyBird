@@ -31,6 +31,7 @@ struct Renderer {
 		int frame,
 		int offset);
 	//void Print(int x, int y, char const* text);
+	void DrawLine(int aX, int aY, int bX, int bY);
 	void Clear();
 	void Present();
 	Texture* GetTexture(texture_e tag);

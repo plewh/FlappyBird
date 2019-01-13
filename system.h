@@ -15,3 +15,4 @@ void PipeSpawnerTickSystem (EntityManager* entMan, EventManager* eventManager);
 void PipeTickSystem        (EntityManager* entMan, EventManager* eventManager);
 void PipeSpriteSystem      (EntityManager* entMan, Renderer* renderer);
 void CollisionHandlerSystem(EntityManager* entMan, EventManager* eventManager);
+void HudSystem             (EntityManager* entMan, Renderer* renderer);

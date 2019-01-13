@@ -30,6 +30,7 @@ void GameScene::DoFrame(Renderer* renderer) {
 	PipeSpriteSystem(entMan, renderer);
 	BlitSpriteSystem(entMan, renderer, 1);
 	BlitSpriteSystem(entMan, renderer, 2);
+	//HudSystem(entMan, renderer);
 
 }
 
@@ -117,6 +118,6 @@ void GameScene::SpawnPipe() {
 	entMan->AddComponent(ent, new PipeSpriteComponent(TEX_PIPE));
 	entMan->AddComponent(ent, new PipeComponent(offset, -4.5));
 	entMan->AddComponent(ent, new CollidableComponent);
-	entMan->AddComponent(ent, new SizeComponent(0.0, PIPE_GAP));
+	entMan->AddComponent(ent, new SizeComponent(160.0, PIPE_GAP));
 
 }

@@ -3,6 +3,8 @@
 #include "renderer.h"
 #include "component.h"
 #include "event.h"
+#include "renderer.h"
+#include <cmath>
 
 void BlitSpriteSystem(EntityManager* entMan, Renderer* renderer, int layer) {
 
@@ -164,6 +166,15 @@ void FlappyPhysicsSystem(EntityManager* entMan) {
 			pos->y += flap->yAcc;
 			rot->angle = flap->yAcc;
 
+			if ( entMan->size[j] ) {
+
+				SizeComponent* siz = (SizeComponent*)entMan->size[j];
+
+				pos->centreX = pos->x + (siz->w / 2.0);
+				pos->centreY = pos->y + (siz->h / 2.0);
+
+			}
+
 		}
 
 	}
@@ -221,6 +232,16 @@ void PipeTickSystem(EntityManager* entMan, EventManager* eventManager) {
 
 			pos->y = pip->offset; //top of gap
 			pos->x += pip->xAcc;
+
+			if ( entMan->size[j] ) {
+
+				SizeComponent* siz = (SizeComponent*)entMan->size[j];
+
+				pos->centreX = pos->x + (siz->w / 2.0);
+				pos->centreY = pos->y + (siz->h / 2.0);
+
+			}
+
 
 			if ( pos->x + 160.0 < 0.0 )
 				entMan->KillEntity(j);
@@ -297,26 +318,129 @@ void CollisionHandlerSystem(EntityManager* entMan, EventManager* eventManager) {
 
 			}
 
+			// find pipes
 			for ( int i = 0; i < MAX_ENTS; ++i ) {
 
 				if ( entMan->collidable[i] && j != i ) {
 
-						PositionComponent* bPos = 
-							(PositionComponent*)entMan->position[i];
-						SizeComponent* bSize = 
-							(SizeComponent*)entMan->size[i];
+					PositionComponent* bPos = 
+						(PositionComponent*)entMan->position[i];
+					SizeComponent* bSize = 
+						(SizeComponent*)entMan->size[i];
 
-						/*
-						fprintf(
-							stderr, 
-							"A=%f:%f/%f:%f, B=%f:%f/%f:%f\n",
-							aPos->x, aPos->y,
-							aSize->w, aSize->h,
-							bPos->x, bPos->y,
-							bSize->w, bSize->h
-						);
-						*/
+					// top pipe
+					double topX = bPos->x;
+					double topY = 0.0;
+					double topW = 160.0;
+					double topH = bPos->y;
+					double tCnX = topX + (topW / 2.0);
+					double tCnY = topY + (topH / 2.0);
+					double tSpX = tCnX - aPos->centreX;
+					double tSpY = tCnY - aPos->centreY;
+					double tHfX = tCnX - topX;
+					double tHfY = tCnY - topY;
 
+					// bottom pipe
+					double botX = bPos->x;
+					double botY = bPos->y + bSize->h;
+					double botW = 160.0;
+					double botH = (WIN_Y - 160.0) - (botY);
+					double bCnX = botX + (botW / 2.0);
+					double bCnY = botY + (botH / 2.0);
+					double bSpX = bCnX - aPos->centreX;
+					double bSpY = bCnY - aPos->centreY;
+					double bHfX = bCnX - botX;
+					double bHfY = bCnY - botY;
+
+					double aHalfX = aPos->centreX - aPos->x;
+					double aHalfY = aPos->centreY - aPos->y;
+
+					double topPenX = abs(tSpX) - (aHalfX + tHfX);
+					if ( topPenX > 0.0 )
+						topPenX = 0.0;
+					double topPenY = abs(tSpY) - (aHalfY + tHfY);
+					if ( topPenY > 0.0 )
+						topPenY = 0.0;
+
+					double botPenX = abs(bSpX) - (aHalfX + bHfX);
+					if ( botPenX > 0.0 )
+						botPenX = 0.0;
+					double botPenY = abs(bSpY) - (aHalfY + bHfY);
+					if ( botPenY > 0.0 )
+						botPenY = 0.0;
+
+					if (topPenX != 0.0 && topPenY != 0.0) {
+
+						eventManager->Post(new Event(GAME_RESTART, "q"));
+						return;
+
+					}
+
+					if (botPenX != 0.0 && botPenY != 0.0) {
+
+						eventManager->Post(new Event(GAME_RESTART, "q"));
+						return;
+
+					}
+
+			// prevent each collision being handled twice (A->B, B->A)
+			return;
+
+			}
+
+		}}
+
+	}
+
+}
+
+void HudSystem(EntityManager* entMan, Renderer* renderer) {
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		// find flappy
+		if ( entMan->flappyPhysics[j] ) {
+
+			PositionComponent* aPos = 
+				(PositionComponent*)entMan->position[j];
+
+			// find pipes
+			for ( int i = 0; i < MAX_ENTS; ++i ) {
+
+				if ( entMan->collidable[i] && j != i ) {
+
+					PositionComponent* bPos = 
+						(PositionComponent*)entMan->position[i];
+					SizeComponent* bSize = 
+						(SizeComponent*)entMan->size[i];
+
+					double topX = bPos->x;
+					double topY = 0.0;
+					double topW = 160.0;
+					double topH = bPos->y;
+					double tCnX = topX + (topW / 2.0);
+					double tCnY = topY + (topH / 2.0);
+
+					double botX = bPos->x;
+					double botY = bPos->y + bSize->h;
+					double botW = 160.0;
+					double botH = (WIN_Y - 160.0) - (botY);
+					double bCnX = botX + (botW / 2.0);
+					double bCnY = botY + (botH / 2.0);
+
+					renderer->DrawLine(
+						tCnX, 
+						tCnY, 
+						aPos->centreX, 
+						aPos->centreY
+					);
+					
+					renderer->DrawLine(
+						bCnX, 
+						bCnY, 
+						aPos->centreX, 
+						aPos->centreY
+					);
 
 				}
 
@@ -330,3 +454,4 @@ void CollisionHandlerSystem(EntityManager* entMan, EventManager* eventManager) {
 	}
 
 }
+
