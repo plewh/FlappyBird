@@ -27,6 +27,8 @@ App::~App() {
 
 	Log("App cleaning up...");
 	delete(renderer);
+	delete(eventManager);
+	delete(sceneManager);
 
 }
 

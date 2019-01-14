@@ -53,16 +53,8 @@ void SceneManager::Responder(Event* event) {
 			}
 			break;
 
-		case TITLE_SPLASH_DONE:
-			sceneStack[0]->Responder(event, eventManager);
-			break;
-
-		case SPAWN_PIPE:
-		case GAME_RESTART:
-			sceneStack.back()->Responder(event, eventManager);
-			break;
-
 		default:
+			sceneStack.back()->Responder(event, eventManager);
 			break;
 
 	}
