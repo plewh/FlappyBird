@@ -26,9 +26,6 @@ TODO:
 
 * Pipes
 	* Add "cap" to top/bottom of pipes
-* Scoring
-	* Scoring logic
-	* Draw score on hud
 * Sounds
 	* Create sound system
 	* Get sound assets
