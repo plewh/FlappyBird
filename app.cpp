@@ -76,6 +76,9 @@ void App::PumpSystemEvents() {
 				break;
 
 			case SDL_KEYDOWN:
+				if (event.key.repeat == 1)
+					break;
+
 				switch (event.key.keysym.sym) {
 
 					case SDLK_SPACE:
@@ -94,6 +97,7 @@ void App::PumpSystemEvents() {
 						break;
 
 				}
+				break;
 
 			default:
 				break;

@@ -129,7 +129,7 @@ void GameScene::PopulateWithInitEnts(EntityManager* entMan) {
 	entMan->AddComponent(ent, new PositionComponent(0.0, 1280.0 - 160.0));
 	entMan->AddComponent(ent, new SpriteComponent(TEX_GND, 1.0, 255.0, 1));
 	entMan->AddComponent(ent, new SpriteSpanComponent(20));
-	entMan->AddComponent(ent, new AnimComponent(50, -0.08, 48, 160, 1));
+	entMan->AddComponent(ent, new AnimComponent(50, -0.1, 48, 160, 1));
 
 	// flappy
 	ent = entMan->NewEntity();
@@ -143,11 +143,11 @@ void GameScene::PopulateWithInitEnts(EntityManager* entMan) {
 
 	// pipe spawner
 	ent = entMan->NewEntity();
-	entMan->AddComponent(ent, new PipeSpawnerComponent(-0.007));
+	entMan->AddComponent(ent, new PipeSpawnerComponent(-0.01));
 
 	// score
 	ent = entMan->NewEntity();
-	entMan->AddComponent( ent, new PositionComponent( 80.0, 0.0 ) );
+	entMan->AddComponent( ent, new PositionComponent( 80.0, 40.0 ) );
 	entMan->AddComponent( ent, new SizeComponent( 0.0, 0.0 ) );
 	ScoreComponent* scr = new ScoreComponent;
 	ScoreListenerComponent* slc = new ScoreListenerComponent(scr);
@@ -188,7 +188,7 @@ void GameScene::SpawnPipe() {
 	int ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(950.0, 0.0));
 	entMan->AddComponent(ent, new PipeSpriteComponent(TEX_PIPE));
-	entMan->AddComponent(ent, new PipeComponent(offset, -4.5));
+	entMan->AddComponent(ent, new PipeComponent(offset, -6.0));
 	entMan->AddComponent(ent, new CollidableComponent);
 	entMan->AddComponent(ent, new SizeComponent(160.0, PIPE_GAP));
 

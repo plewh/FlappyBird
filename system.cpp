@@ -6,7 +6,8 @@
 #include "renderer.h"
 #include <cmath>
 
-void BlitSpriteSystem(EntityManager* entMan, int id, Renderer* renderer, int layer) {
+void BlitSpriteSystem(
+	EntityManager* entMan, int id, Renderer* renderer, int layer) {
 
 	if ( entMan->position[id] && entMan->sprite[id] ) {
 
@@ -162,6 +163,13 @@ void FlappyInputSystem(EntityManager* entMan, int id) {
 			(FlappyPhysicsComponent*)entMan->flappyPhysics[id];
 
 		flap->yAcc += fIn->lift;
+		if ( flap->yAcc < -20.0 ) {
+			flap->yAcc = -20.0;
+		}
+
+		if ( flap->yAcc > 2.0 ) {
+			flap->yAcc = 2.0;
+		}
 
 	}
 
@@ -324,7 +332,7 @@ void CollisionHandlerSystem(EntityManager* entMan, int id, EventManager* eventMa
 
 				}
 
-				// check for score
+				// check for score trigger collision
 				if ( (aPos->x + aSize->w) > bPos->x + ((160.0 / 3.0) * 2) ) {
 
 					PipeComponent* pip = (PipeComponent*)entMan->pipe[i];
@@ -335,9 +343,14 @@ void CollisionHandlerSystem(EntityManager* entMan, int id, EventManager* eventMa
 					}
 				}
 
+				// prevent flappy going over pipes
+				if ( aPos->y + aSize->h <= 0 ) {
 
+					if ( (aPos->x + aSize->w > bPos->x) && 
+						 (aPos->x + aSize->w < bPos->x + bSize->w) )
+						eventManager->Post(new Event(GAME_RESTART, "q"));
+				}
 
-				// prevent each collision being handled twice (A->B, B->A)
 				return;
 
 			}

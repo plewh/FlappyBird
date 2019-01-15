@@ -39,8 +39,5 @@ TODO:
 	* Tweak flappy/pipe params to get as close to real game as possible
 	* Tweak speed of ground scroll to match pipe
 	* Mouse controls
-	* Cap y acceleration
-	* prevent holding key down
-	* extend top pipe to infinity
 	* tweak flappy hitbox to be less unfair
 	* wait on death (flappy fall off screen?)
