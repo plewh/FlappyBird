@@ -23,6 +23,8 @@ EntityManager::EntityManager() {
 		pipe[j]          = NULL;
 		pipeSprite[j]    = NULL;
 		collidable[j]    = NULL;
+		score[j]         = NULL;
+		scoreListener[j] = NULL;
 
 	}
 
@@ -70,6 +72,8 @@ void EntityManager::KillEntity(int id) {
 	RemoveComponent(id, PIPE);
 	RemoveComponent(id, PIPE_SPRITE);
 	RemoveComponent(id, COLLIDABLE);
+	RemoveComponent(id, SCORE);
+	RemoveComponent(id, SCORELISTENER);
 
 	activeEnts[id] = false;
 
@@ -133,6 +137,14 @@ void EntityManager::AddComponent(int id, Component* component) {
 
 		case COLLIDABLE:
 			collidable[id]    = component;
+			break;
+
+		case SCORE:
+			score[id]         = component;
+			break;
+
+		case SCORELISTENER:
+			scoreListener[id] = component;
 			break;
 
 		default:
@@ -214,6 +226,16 @@ void EntityManager::RemoveComponent(int id, component_tag_e componentTag) {
 		case COLLIDABLE:
 			delete(collidable[id]);
 			collidable[id] = NULL;
+			break;
+
+		case SCORE:
+			delete(score[id]);
+			score[id] = NULL;
+			break;
+
+		case SCORELISTENER:
+			//delete(scoreListener[id]);
+			scoreListener[id] = NULL;
 			break;
 
 		default:

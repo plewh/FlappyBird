@@ -30,7 +30,7 @@ struct Renderer {
 		double alpha,
 		int frame,
 		int offset);
-	//void Print(int x, int y, char const* text);
+	void Print(int x, int y, char const* text);
 	void DrawLine(int aX, int aY, int bX, int bY);
 	void Clear();
 	void Present();

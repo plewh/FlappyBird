@@ -12,6 +12,11 @@ static Texture* tex_splash;
 static Texture* tex_splash1;
 static Texture* tex_gnd;
 
+static TTF_Font* font;
+static SDL_Color red;
+static SDL_Color white;
+static SDL_Color black;
+
 static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath);
 static Texture* LoadTex(SDL_Renderer* renderer, char const* fPath, int w, int h, int frames);
 
@@ -35,6 +40,20 @@ Renderer::Renderer() {
 
 	Log("Starting SDL_ttf...");
 	TTF_Init();
+	Log("Loading fonts...");
+	font = TTF_OpenFont("ass/comic_andy.ttf", 200);
+	red.r   = 155;
+	red.g   = 50;
+	red.b   = 50;
+	red.a   = 255;
+	white.r = 255;
+	white.g = 255;
+	white.b = 255;
+	white.a = 255;
+	black.r = 0;
+	black.b = 0;
+	black.g = 0;
+	black.a = 255;
 
 	Log("Loading textures...");
 	dunno       = LoadTex(renderer, "ass/dunno.bmp");
@@ -99,12 +118,11 @@ void Renderer::Blit(
 
 }
 
-/*
 void Renderer::Print(int x, int y, char const* text) {
 
 	SDL_Rect r = {x, y, 0, 0};
-	TTF_SizeText(GetFont(), text, &r.w, &r.h);
-	SDL_Surface* surf = TTF_RenderText_Solid(GetFont(), text, *GetFontColour());
+	TTF_SizeText(font, text, &r.w, &r.h);
+	SDL_Surface* surf = TTF_RenderText_Solid(font, text, red );
 	SDL_Texture* tex  = SDL_CreateTextureFromSurface(renderer, surf);
 	SDL_RenderCopyEx(
 		renderer,
@@ -119,7 +137,6 @@ void Renderer::Print(int x, int y, char const* text) {
 	SDL_DestroyTexture(tex);
 
 }
-	*/
 
 void Renderer::DrawLine(int aX, int aY, int bX, int bY) {
 

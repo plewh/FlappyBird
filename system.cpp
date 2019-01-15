@@ -148,15 +148,6 @@ void FlappyPhysicsSystem(EntityManager* entMan, int id) {
 		pos->y += flap->yAcc;
 		rot->angle = flap->yAcc;
 
-		if ( entMan->size[id] ) {
-
-			SizeComponent* siz = (SizeComponent*)entMan->size[id];
-
-			pos->centreX = pos->x + (siz->w / 2.0);
-			pos->centreY = pos->y + (siz->h / 2.0);
-
-		}
-
 	}
 
 }
@@ -202,16 +193,6 @@ void PipeTickSystem(EntityManager* entMan, int id, EventManager* eventManager) {
 
 		pos->y = pip->offset; //top of gap
 		pos->x += pip->xAcc;
-
-		if ( entMan->size[id] ) {
-
-			SizeComponent* siz = (SizeComponent*)entMan->size[id];
-
-			pos->centreX = pos->x + (siz->w / 2.0);
-			pos->centreY = pos->y + (siz->h / 2.0);
-
-		}
-
 
 		if ( pos->x + 160.0 < 0.0 )
 			entMan->KillEntity(id);
@@ -289,16 +270,16 @@ void CollisionHandlerSystem(EntityManager* entMan, int id, EventManager* eventMa
 					(SizeComponent*)entMan->size[i];
 
 				// top pipe
-				double topX = bPos->x;
-				double topY = 0.0;
-				double topW = 160.0;
-				double topH = bPos->y;
-				double tCnX = topX + (topW / 2.0);
-				double tCnY = topY + (topH / 2.0);
-				double tSpX = tCnX - aPos->centreX;
-				double tSpY = tCnY - aPos->centreY;
-				double tHfX = tCnX - topX;
-				double tHfY = tCnY - topY;
+				double topX = bPos->x; // origin x
+				double topY = 0.0; // origin y
+				double topW = 160.0; // width
+				double topH = bPos->y; // height
+				double tCnX = topX + (topW / 2.0); // centre x
+				double tCnY = topY + (topH / 2.0); // centre y
+				double tSpX = tCnX - ( aPos->x + ( aSize->w / 2.0 ) ); // seperation x
+				double tSpY = tCnY - ( aPos->y + ( aSize->h / 2.0 ) ); // seperation y
+				double tHfX = tCnX - topX; // half width origin x
+				double tHfY = tCnY - topY; // half width origin y
 
 				// bottom pipe
 				double botX = bPos->x;
@@ -307,13 +288,13 @@ void CollisionHandlerSystem(EntityManager* entMan, int id, EventManager* eventMa
 				double botH = (WIN_Y - 160.0) - (botY);
 				double bCnX = botX + (botW / 2.0);
 				double bCnY = botY + (botH / 2.0);
-				double bSpX = bCnX - aPos->centreX;
-				double bSpY = bCnY - aPos->centreY;
+				double bSpX = bCnX - ( aPos->x + ( aSize->w / 2.0 ) ); // seperation x
+				double bSpY = bCnY - ( aPos->y + ( aSize->h / 2.0 ) ); // seperation y
 				double bHfX = bCnX - botX;
 				double bHfY = bCnY - botY;
 
-				double aHalfX = aPos->centreX - aPos->x;
-				double aHalfY = aPos->centreY - aPos->y;
+				double aHalfX = ( aPos->x + ( aSize->w / 2.0 ) ) - aPos->x;
+				double aHalfY = ( aPos->y + ( aSize->h / 2.0 ) ) - aPos->y;
 
 				double topPenX = abs(tSpX) - (aHalfX + tHfX);
 				if ( topPenX > 0.0 )
@@ -343,67 +324,42 @@ void CollisionHandlerSystem(EntityManager* entMan, int id, EventManager* eventMa
 
 				}
 
-		// prevent each collision being handled twice (A->B, B->A)
-		return;
+				// check for score
+				if ( (aPos->x + aSize->w) > bPos->x + ((160.0 / 3.0) * 2) ) {
+
+					PipeComponent* pip = (PipeComponent*)entMan->pipe[i];
+
+					if ( pip->hasScore ) {
+						pip->hasScore = false;
+						eventManager->Post(new Event(INC_SCORE, " "));
+					}
+				}
+
+
+
+				// prevent each collision being handled twice (A->B, B->A)
+				return;
+
+			}
 
 		}
-
-	}}
+	
+	}
 
 }
 
 void HudSystem(EntityManager* entMan, int id, Renderer* renderer) {
 
-	// find flappy
-	if ( entMan->flappyPhysics[id] ) {
+	if ( entMan->score[id] ) {
 
-		PositionComponent* aPos = 
+		PositionComponent* pos = 
 			(PositionComponent*)entMan->position[id];
-
-		// find pipes
-		for ( int i = 0; i < MAX_ENTS; ++i ) {
-
-			if ( entMan->collidable[i] && id != i ) {
-
-				PositionComponent* bPos = 
-					(PositionComponent*)entMan->position[i];
-				SizeComponent* bSize = 
-					(SizeComponent*)entMan->size[i];
-
-				double topX = bPos->x;
-				double topY = 0.0;
-				double topW = 160.0;
-				double topH = bPos->y;
-				double tCnX = topX + (topW / 2.0);
-				double tCnY = topY + (topH / 2.0);
-
-				double botX = bPos->x;
-				double botY = bPos->y + bSize->h;
-				double botW = 160.0;
-				double botH = (WIN_Y - 160.0) - (botY);
-				double bCnX = botX + (botW / 2.0);
-				double bCnY = botY + (botH / 2.0);
-
-				renderer->DrawLine(
-					tCnX, 
-					tCnY, 
-					aPos->centreX, 
-					aPos->centreY
-				);
-				
-				renderer->DrawLine(
-					bCnX, 
-					bCnY, 
-					aPos->centreX, 
-					aPos->centreY
-				);
-
-			}
-
-		}
-
-		// prevent each collision being handled twice (A->B, B->A)
-		return;
+		ScoreComponent* scr = 
+			(ScoreComponent*)entMan->score[id];
+		
+		char buff[10];
+		sprintf(buff, "%d", scr->score);
+		renderer->Print(pos->x, pos->y, buff);
 
 	}
 

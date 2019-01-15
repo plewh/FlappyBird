@@ -43,5 +43,7 @@ struct EntityManager {
 	Component* pipe          [MAX_ENTS];
 	Component* pipeSprite    [MAX_ENTS];
 	Component* collidable    [MAX_ENTS];
+	Component* score         [MAX_ENTS];
+	Component* scoreListener [MAX_ENTS];
 
 };

@@ -5,8 +5,6 @@ PositionComponent::PositionComponent(double x, double y) {
 	this->tag = POSITION;
 	this->x = x;
 	this->y = y;
-	this->centreX = 0.0;
-	this->centreY = 0.0;
 
 }
 
@@ -114,6 +112,7 @@ PipeComponent::PipeComponent(double offset, double xAcc) {
 	this->tag          = PIPE;
 	this->offset       = offset;
 	this->xAcc         = xAcc;
+	this->hasScore     = true;
 
 }
 
@@ -127,5 +126,27 @@ PipeSpriteComponent::PipeSpriteComponent(texture_e tName) {
 CollidableComponent::CollidableComponent() {
 
 	this->tag          = COLLIDABLE;
+
+}
+
+ScoreComponent::ScoreComponent() {
+
+	this->tag          = SCORE;
+	this->score        = 0;
+
+}
+
+ScoreListenerComponent::ScoreListenerComponent(ScoreComponent* scr) {
+
+	this->tag          = SCORELISTENER;
+	this->scr          = scr;
+
+}
+
+void ScoreListenerComponent::Responder(Event* event) {
+
+	if ( event->type == INC_SCORE ) {
+		this->scr->score += 1;
+	}
 
 }

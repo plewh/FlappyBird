@@ -10,7 +10,8 @@ enum eventType_e {
 	TITLE_SPLASH_DONE,
 	SPAWN_PIPE,
 	KILL_ENT,
-	GAME_RESTART
+	GAME_RESTART,
+	INC_SCORE
 
 };
 
@@ -36,6 +37,7 @@ struct EventManager {
 
 	void PumpEvents();
 	void AddListener(EventListener* listener);
+	void RemoveListener(EventListener* listener);
 	void Post(Event* event);
 
 	private:

@@ -58,7 +58,6 @@ void GameScene::DoFrame(Renderer* renderer) {
 
 	}
 
-	/*
 	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if ( entMan->activeEnts[j] == true ) {
@@ -66,7 +65,6 @@ void GameScene::DoFrame(Renderer* renderer) {
 		}
 
 	}
-	*/
 
 }
 
@@ -91,7 +89,7 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 
 		case KEYDOWN:
 			if (strcmp(event->data, "ENTER") == 0) {
-				Restart();
+				Restart(eventManager);
 			} else {
 				for (int j = 0; j < MAX_ENTS; ++j) {
 
@@ -109,7 +107,7 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 			break;
 
 		case GAME_RESTART:
-			Restart();
+			Restart(eventManager);
 			break;
 
 		default:
@@ -147,11 +145,36 @@ void GameScene::PopulateWithInitEnts(EntityManager* entMan) {
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PipeSpawnerComponent(-0.007));
 
+	// score
+	ent = entMan->NewEntity();
+	entMan->AddComponent( ent, new PositionComponent( 80.0, 0.0 ) );
+	entMan->AddComponent( ent, new SizeComponent( 0.0, 0.0 ) );
+	ScoreComponent* scr = new ScoreComponent;
+	ScoreListenerComponent* slc = new ScoreListenerComponent(scr);
+	eventManager->AddListener(slc);
+	entMan->AddComponent( ent, scr );
+	entMan->AddComponent( ent, slc );
+
 }
 
-void GameScene::Restart() {
+void GameScene::Restart(EventManager* eventManager) {
 
 	Log("Caught game start event!");
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+
+			if ( entMan->scoreListener[j] ) {
+
+				EventListener* e = (EventListener*)(entMan->scoreListener[j]);
+				eventManager->RemoveListener(e-1); // offset due to multiple inheritance
+
+			}
+
+		}
+
+	}
 
 	delete( entMan );
 	entMan = new EntityManager;

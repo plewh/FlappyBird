@@ -17,8 +17,6 @@ struct PositionComponent:Component {
 
 	double x;
 	double y;
-	double centreX;
-	double centreY;
 
 };
 
@@ -130,6 +128,7 @@ struct PipeComponent:Component {
 
 	double offset;
 	double xAcc;
+	bool   hasScore;
 
 };
 
@@ -144,5 +143,20 @@ struct PipeSpriteComponent:Component {
 struct CollidableComponent:Component {
 
 	CollidableComponent();
+
+};
+
+struct ScoreComponent:Component {
+
+	ScoreComponent();
+	int score;
+
+};
+
+struct ScoreListenerComponent:Component, EventListener {
+
+	ScoreListenerComponent(ScoreComponent* scr);
+	void Responder(Event* event);
+	ScoreComponent* scr;
 
 };

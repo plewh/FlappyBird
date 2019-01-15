@@ -50,6 +50,21 @@ void EventManager::AddListener(EventListener* listener) {
 
 }
 
+void EventManager::RemoveListener(EventListener* listener) {
+
+	for ( auto j = listenerVect.begin(); j != listenerVect.end(); ++j) {
+
+		if ( *j == listener ) {
+
+			listenerVect.erase(j);
+			return;
+
+		}
+
+	}
+
+}
+
 void EventManager::Post(Event* event) {
 
 	eventQueue[head] = event;

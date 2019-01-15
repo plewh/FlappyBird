@@ -32,7 +32,9 @@ enum component_tag_e {
 	PIPE_SPAWN,
 	PIPE,
 	PIPE_SPRITE,
-	COLLIDABLE
+	COLLIDABLE,
+	SCORE,
+	SCORELISTENER
 
 };
 
