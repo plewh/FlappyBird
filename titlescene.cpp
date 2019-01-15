@@ -35,15 +35,27 @@ TitleScene::~TitleScene() {
 
 void TitleScene::DoFrame(Renderer* renderer) {
 
-	BlitSpriteSystem(entMan, renderer, 0);
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			BlitSpriteSystem(entMan, j, renderer, 0);
+		}
+
+	}
 
 }
 
 void TitleScene::Tick() {
 
-	SplashTickSystem(entMan, eventManager);
-	MaskTickSystem(entMan, eventManager);
-	AngleTickSystem(entMan);
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			SplashTickSystem(entMan, j, eventManager);
+			MaskTickSystem(entMan, j, eventManager);
+			AngleTickSystem(entMan, j);
+		}
+
+	}
 
 }
 

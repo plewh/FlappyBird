@@ -50,6 +50,8 @@ int EntityManager::NewEntity() {
 
 	}
 
+	return -1;
+
 }
 
 void EntityManager::KillEntity(int id) {

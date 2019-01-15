@@ -26,20 +26,62 @@ GameScene::~GameScene() {
 
 void GameScene::DoFrame(Renderer* renderer) {
 
-	BlitSpriteSystem(entMan, renderer, 0);
-	PipeSpriteSystem(entMan, renderer);
-	BlitSpriteSystem(entMan, renderer, 1);
-	BlitSpriteSystem(entMan, renderer, 2);
-	//HudSystem(entMan, renderer);
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			BlitSpriteSystem(entMan, j, renderer, 0);
+		}
+
+	}
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			PipeSpriteSystem(entMan, j, renderer);
+		}
+
+	}
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			BlitSpriteSystem(entMan, j, renderer, 1);
+		}
+
+	}
+
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			BlitSpriteSystem(entMan, j, renderer, 2);
+		}
+
+	}
+
+	/*
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			HudSystem(entMan, j, renderer);
+		}
+
+	}
+	*/
 
 }
 
 void GameScene::Tick() {
 
-	FlappyPhysicsSystem(entMan);
-	PipeSpawnerTickSystem(entMan, eventManager);
-	PipeTickSystem(entMan, eventManager);
-	CollisionHandlerSystem( entMan, eventManager );
+	for (int j = 0; j < MAX_ENTS; ++j) {
+
+		if ( entMan->activeEnts[j] == true ) {
+			FlappyPhysicsSystem(entMan, j);
+			PipeSpawnerTickSystem(entMan, j, eventManager);
+			PipeTickSystem(entMan, j, eventManager);
+			CollisionHandlerSystem( entMan, j, eventManager );
+		}
+
+	}
 
 }
 
@@ -51,7 +93,14 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 			if (strcmp(event->data, "ENTER") == 0) {
 				Restart();
 			} else {
-				FlappyInputSystem(entMan);
+				for (int j = 0; j < MAX_ENTS; ++j) {
+
+					if ( entMan->activeEnts[j] == true ) {
+						FlappyInputSystem(entMan, j);
+					}
+
+				}
+
 			}
 			break;
 
