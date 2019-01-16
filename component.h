@@ -148,8 +148,9 @@ struct CollidableComponent:Component {
 
 struct ScoreComponent:Component {
 
-	ScoreComponent();
+	ScoreComponent(int maxScore);
 	int score;
+	int maxScore;
 
 };
 

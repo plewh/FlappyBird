@@ -374,7 +374,7 @@ void HudSystem(EntityManager* entMan, int id, Renderer* renderer) {
 			(ScoreComponent*)entMan->score[id];
 		
 		char buff[10];
-		sprintf(buff, "%d", scr->score);
+		sprintf(buff, "%d / %d", scr->score, scr->maxScore);
 		renderer->Print(pos->x, pos->y, buff);
 
 	}

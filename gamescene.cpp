@@ -10,9 +10,9 @@ GameScene::GameScene(EventManager* eventManager) {
 	this->eventManager = eventManager;
 
 	entMan = new EntityManager;
-	PopulateWithInitEnts(entMan);
-
+	maxScore    = 0;
 	restartFlag = false;
+	PopulateWithInitEnts(entMan);
 
 	//my name is lexi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//my name is aidan!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -76,13 +76,15 @@ void GameScene::Tick() {
 
 		if ( entMan->activeEnts[j] == true ) {
 			FlappyPhysicsSystem(entMan, j);
-			PipeSpawnerTickSystem(entMan, j, eventManager);
-			PipeTickSystem(entMan, j, eventManager);
-			CollisionHandlerSystem( entMan, j, eventManager );
+			if ( !restartFlag ) {
+				PipeSpawnerTickSystem(entMan, j, eventManager);
+				PipeTickSystem(entMan, j, eventManager);
+				CollisionHandlerSystem( entMan, j, eventManager );
+			}
 		}
 
 	}
-
+	
 }
 
 void GameScene::Responder(Event* event, EventManager* eventManager) {
@@ -168,9 +170,9 @@ void GameScene::PopulateWithInitEnts(EntityManager* entMan) {
 
 	// score
 	ent = entMan->NewEntity();
-	entMan->AddComponent( ent, new PositionComponent( 80.0, 40.0 ) );
+	entMan->AddComponent( ent, new PositionComponent( 40.0, 20.0 ) );
 	entMan->AddComponent( ent, new SizeComponent( 0.0, 0.0 ) );
-	ScoreComponent* scr = new ScoreComponent;
+	ScoreComponent* scr = new ScoreComponent(maxScore);
 	ScoreListenerComponent* slc = new ScoreListenerComponent(scr);
 	eventManager->AddListener(slc);
 	entMan->AddComponent( ent, scr );
@@ -229,8 +231,7 @@ void GameScene::DoPreRestart(EntityManager* entMan) {
 			entMan->RemoveComponent(j, FLAPPY_INPUT);
 			angle->angle = 90.0;
 			angle->angleAcc = 0.0;
-			fpy->yAcc = 5.0;
-
+			fpy->yAcc = 15.0;
 
 		}
 
@@ -240,7 +241,11 @@ void GameScene::DoPreRestart(EntityManager* entMan) {
 			entMan->RemoveComponent(j, PIPE_SPAWN);
 		if ( entMan->anim[j] )
 			entMan->RemoveComponent(j, ANIM);
-
+		if ( entMan->score[j] ) {
+			ScoreComponent* scr = (ScoreComponent*)entMan->score[j];
+			if ( scr->score > maxScore )
+				maxScore = scr->score;
+		}
 	}
 
 }

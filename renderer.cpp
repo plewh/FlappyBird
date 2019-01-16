@@ -42,7 +42,7 @@ Renderer::Renderer() {
 	Log("Starting SDL_ttf...");
 	TTF_Init();
 	Log("Loading fonts...");
-	font = TTF_OpenFont("ass/font.ttf", 100);
+	font = TTF_OpenFont("ass/arial.ttf", 80);
 	red.r   = 155;
 	red.g   = 50;
 	red.b   = 50;
@@ -127,7 +127,7 @@ void Renderer::Print(int x, int y, char const* text) {
 
 	SDL_Rect r = {x, y, 0, 0};
 	TTF_SizeText(font, text, &r.w, &r.h);
-	SDL_Surface* surf = TTF_RenderText_Solid(font, text, yellow );
+	SDL_Surface* surf = TTF_RenderText_Solid(font, text, red );
 	SDL_Texture* tex  = SDL_CreateTextureFromSurface(renderer, surf);
 	SDL_RenderCopyEx(
 		renderer,

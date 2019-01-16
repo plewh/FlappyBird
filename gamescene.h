@@ -21,5 +21,6 @@ struct GameScene:Scene {
 	void SpawnPipe();
 	bool restartFlag;
 	void DoPreRestart(EntityManager* entMan);
+	int  maxScore;
 
 };

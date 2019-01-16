@@ -129,10 +129,11 @@ CollidableComponent::CollidableComponent() {
 
 }
 
-ScoreComponent::ScoreComponent() {
+ScoreComponent::ScoreComponent(int maxScore) {
 
 	this->tag          = SCORE;
 	this->score        = 0;
+	this->maxScore     = maxScore;
 
 }
 
