@@ -39,4 +39,3 @@ TODO:
 	* Tweak flappy/pipe params to get as close to real game as possible
 	* Tweak speed of ground scroll to match pipe
 	* tweak flappy hitbox to be less unfair
-	* wait on death (flappy fall off screen?)

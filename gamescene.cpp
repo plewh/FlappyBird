@@ -12,6 +12,8 @@ GameScene::GameScene(EventManager* eventManager) {
 	entMan = new EntityManager;
 	PopulateWithInitEnts(entMan);
 
+	restartFlag = false;
+
 	//my name is lexi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//my name is aidan!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -90,7 +92,10 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 		case KEYDOWN:
 			if (strcmp(event->data, "ENTER") == 0) {
 				Restart(eventManager);
+			} else if ( restartFlag ) {
+				Restart(eventManager);
 			} else {
+
 				for (int j = 0; j < MAX_ENTS; ++j) {
 
 					if ( entMan->activeEnts[j] == true ) {
@@ -103,12 +108,17 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 			break;
 
 		case MOUSE_BUTT:
-			for (int j = 0; j < MAX_ENTS; ++j) {
 
-				if ( entMan->activeEnts[j] == true ) {
-					FlappyInputSystem(entMan, j);
+			if ( restartFlag )
+				Restart(eventManager);
+			else {
+				for (int j = 0; j < MAX_ENTS; ++j) {
+
+					if ( entMan->activeEnts[j] == true ) {
+						FlappyInputSystem(entMan, j);
+					}
+
 				}
-
 			}
 			break;
 
@@ -117,7 +127,8 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 			break;
 
 		case GAME_RESTART:
-			Restart(eventManager);
+			restartFlag = true;
+			DoPreRestart(entMan);
 			break;
 
 		default:
@@ -138,7 +149,7 @@ void GameScene::PopulateWithInitEnts(EntityManager* entMan) {
 	ent = entMan->NewEntity();
 	entMan->AddComponent(ent, new PositionComponent(0.0, 1280.0 - 160.0));
 	entMan->AddComponent(ent, new SpriteComponent(TEX_GND, 1.0, 255.0, 1));
-	entMan->AddComponent(ent, new SpriteSpanComponent(20));
+	entMan->AddComponent(ent, new SpriteSpanComponent(22));
 	entMan->AddComponent(ent, new AnimComponent(50, -0.1, 48, 160, 1));
 
 	// flappy
@@ -171,6 +182,7 @@ void GameScene::Restart(EventManager* eventManager) {
 
 	Log("Caught game start event!");
 
+	restartFlag = false;
 	for (int j = 0; j < MAX_ENTS; ++j) {
 
 		if ( entMan->activeEnts[j] == true ) {
@@ -201,5 +213,34 @@ void GameScene::SpawnPipe() {
 	entMan->AddComponent(ent, new PipeComponent(offset, -6.0));
 	entMan->AddComponent(ent, new CollidableComponent);
 	entMan->AddComponent(ent, new SizeComponent(160.0, PIPE_GAP));
+
+}
+
+void GameScene::DoPreRestart(EntityManager* entMan) {
+
+	for ( int j = 0; j < MAX_ENTS; ++j) {
+
+		// find flappy
+		if ( entMan->flappyPhysics[j] ) {
+
+			RotateComponent* angle = (RotateComponent*)entMan->angle[j];
+			FlappyPhysicsComponent* fpy = (FlappyPhysicsComponent*)entMan->flappyPhysics[j];
+
+			entMan->RemoveComponent(j, FLAPPY_INPUT);
+			angle->angle = 90.0;
+			angle->angleAcc = 0.0;
+			fpy->yAcc = 5.0;
+
+
+		}
+
+		if ( entMan->pipe[j] )
+			entMan->RemoveComponent(j, PIPE);
+		if ( entMan->pipeSpawn[j] )
+			entMan->RemoveComponent(j, PIPE_SPAWN);
+		if ( entMan->anim[j] )
+			entMan->RemoveComponent(j, ANIM);
+
+	}
 
 }

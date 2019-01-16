@@ -19,5 +19,7 @@ struct GameScene:Scene {
 	void PopulateWithInitEnts(EntityManager* entMan);
 	void Restart(EventManager* eventManager);
 	void SpawnPipe();
+	bool restartFlag;
+	void DoPreRestart(EntityManager* entMan);
 
 };

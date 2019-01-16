@@ -42,7 +42,7 @@ Renderer::Renderer() {
 	Log("Starting SDL_ttf...");
 	TTF_Init();
 	Log("Loading fonts...");
-	font = TTF_OpenFont("ass/arial.ttf", 100);
+	font = TTF_OpenFont("ass/font.ttf", 100);
 	red.r   = 155;
 	red.g   = 50;
 	red.b   = 50;

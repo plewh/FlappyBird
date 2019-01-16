@@ -144,9 +144,12 @@ void FlappyPhysicsSystem(EntityManager* entMan, int id) {
 			(FlappyPhysicsComponent*)entMan->flappyPhysics[id];
 		PositionComponent* pos = (PositionComponent*)entMan->position[id];
 		RotateComponent* rot = (RotateComponent*)entMan->angle[id];
+		SizeComponent* size  = (SizeComponent*)entMan->size[id];
 
 		flap->yAcc += flap->grav;
 		pos->y += flap->yAcc;
+		if ( (pos->y + size->h) > (WIN_Y - 160) )
+			pos->y = WIN_Y - 160 - size->h;
 		rot->angle = flap->yAcc;
 
 	}
