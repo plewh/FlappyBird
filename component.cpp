@@ -66,7 +66,7 @@ MaskTickComponent::MaskTickComponent(double decay) {
 FlappyPhysicsComponent::FlappyPhysicsComponent() {
 
 	this->tag   = FLAPPY_PHYSICS;
-	this->grav  = 1.5;
+	this->grav  = 1.2;
 	this->yAcc  = 0.0;
 
 }

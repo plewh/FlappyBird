@@ -102,6 +102,16 @@ void GameScene::Responder(Event* event, EventManager* eventManager) {
 			}
 			break;
 
+		case MOUSE_BUTT:
+			for (int j = 0; j < MAX_ENTS; ++j) {
+
+				if ( entMan->activeEnts[j] == true ) {
+					FlappyInputSystem(entMan, j);
+				}
+
+			}
+			break;
+
 		case SPAWN_PIPE:
 			SpawnPipe();
 			break;

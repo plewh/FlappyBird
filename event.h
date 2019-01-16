@@ -11,7 +11,8 @@ enum eventType_e {
 	SPAWN_PIPE,
 	KILL_ENT,
 	GAME_RESTART,
-	INC_SCORE
+	INC_SCORE,
+	MOUSE_BUTT
 
 };
 

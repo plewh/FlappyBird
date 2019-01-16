@@ -99,6 +99,10 @@ void App::PumpSystemEvents() {
 				}
 				break;
 
+			case SDL_MOUSEBUTTONDOWN:
+				eventManager->Post(new Event(MOUSE_BUTT, " "));
+				break;
+
 			default:
 				break;
 

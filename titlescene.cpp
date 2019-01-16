@@ -64,6 +64,9 @@ void TitleScene::Responder(Event* event, EventManager* eventManager) {
 	if (event->type == KEYDOWN && !strcmp(event->data, " "))
 		eventManager->Post(new Event(CHANGE_SCENE, "GAME_SCENE"));
 
+	if (event->type == MOUSE_BUTT)
+		eventManager->Post(new Event(CHANGE_SCENE, "GAME_SCENE"));
+
 	if (event->type == TITLE_SPLASH_DONE) {
 
 		int id = entMan->NewEntity();
