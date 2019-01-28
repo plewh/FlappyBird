@@ -37,7 +37,8 @@ struct Renderer {
 	Texture* GetTexture(texture_e tag);
 
 	private:
-	SDL_Window* window;
+	SDL_Window*   window;
 	SDL_Renderer* renderer;
+	SDL_Texture*  target;
 
 };

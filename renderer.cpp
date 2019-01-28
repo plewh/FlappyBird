@@ -38,6 +38,7 @@ Renderer::Renderer() {
 	SDL_CreateWindowAndRenderer(WIN_X, WIN_Y, 0, &window, &renderer);
 	SDL_SetWindowResizable(window, SDL_FALSE);
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	target = NULL;
 
 	Log("Starting SDL_ttf...");
 	TTF_Init();
@@ -151,11 +152,45 @@ void Renderer::DrawLine(int aX, int aY, int bX, int bY) {
 
 void Renderer::Clear() {
 	
-	SDL_RenderClear(renderer);
+	if ( target )
+		SDL_DestroyTexture( target );
+
+	target = SDL_CreateTexture(
+		renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WIN_X, WIN_Y
+	);
+
+	SDL_SetRenderTarget( renderer, target );
+	SDL_RenderClear( renderer );
 
 }
 
 void Renderer::Present() {
+
+	SDL_SetRenderTarget( renderer, NULL );
+
+	/*
+	SDL_RenderCopyEx(
+		renderer,
+		target,
+		NULL,
+		NULL,
+		0.0,
+		NULL,
+		SDL_FLIP_NONE
+	);
+	*/
+
+	double scale = 1;
+	SDL_Rect dQuad = {0, 0, 960 * scale, 1280 * scale};
+	SDL_RenderCopyEx(
+		renderer,
+		target,
+		NULL,
+		&dQuad,
+		0.0,
+		NULL,
+		SDL_FLIP_NONE
+	);
 
 	SDL_RenderPresent(renderer);
 
